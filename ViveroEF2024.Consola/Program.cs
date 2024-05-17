@@ -30,23 +30,28 @@ namespace ViveroEF2024.Consola
                 Console.WriteLine("5. Estadísticas por Tipo De Planta");
                 
                 Console.WriteLine("===============================");
+                Console.WriteLine("9.  Editar una Planta");
                 Console.WriteLine("10. Listado de Plantas");
                 Console.WriteLine("11. Listado de Plantas Paginado");
                 Console.WriteLine("12. Listado de Plantas Filtrado");
                 Console.WriteLine("13. Listado de Plantas Ordenado por Precio");
-                Console.WriteLine("14. Listado de objetos anónimos");
+                Console.WriteLine("14. Borrar Planta");
                 Console.WriteLine("15. Listado de Plantas (con Dto)");
                 Console.WriteLine("16. Agregar Planta");
-                Console.WriteLine("17. Plantas por Tipo de Planta");
+                Console.WriteLine("17. Agregar Planta con Proveedor");
+                Console.WriteLine("18. Plantas por Tipo de Planta");
+                Console.WriteLine("19. Asignar Proveedor a Planta");
                 Console.WriteLine("===============================");
                 Console.WriteLine("20. Listado de Envases");
                 Console.WriteLine("21. Ingreso de Envases");
                 Console.WriteLine("22. Eliminar Envases");
                 Console.WriteLine("23. Modificar Envases");
+                Console.WriteLine("24. Listar Cantidad de Plantas Por Envase");
+                
 
                 Console.WriteLine("===============================");
                 Console.WriteLine("30. Listado de Proveedores");
-
+                Console.WriteLine("31. Plantas por Proveedor");
 
                 Console.WriteLine("x. Salir");
 
@@ -70,6 +75,11 @@ namespace ViveroEF2024.Consola
                         EditarTipoDePlanta();
                         break;
                     case "5":
+                        PlantasAgrupadasPorTipoDePlanta();
+                        break;
+                    case "9":
+                        EditarPlanta();
+                        break;
                         
                     case "10":
                         ListarPlantas();
@@ -88,7 +98,7 @@ namespace ViveroEF2024.Consola
                         break;
                     case "14":
                         Console.Clear();
-                        ListarPlantasAnonima();
+                        BorrarPlanta();
                         ConsoleExtensions.EsperaEnter();
                         break;
                     case "15":
@@ -100,8 +110,14 @@ namespace ViveroEF2024.Consola
                         AgregarPlanta();
                         break;
                     case "17":
+                        AgregarPlantaConProveedor();
+                        break;
+                    case "18":
                         PlantasPorTipoDePlanta();
                         ConsoleExtensions.EsperaEnter();
+                        break;
+                    case "19":
+                        AsignarProveedorPlanta();
                         break;
                     case "20":
                         Console.Clear();
@@ -116,6 +132,9 @@ namespace ViveroEF2024.Consola
                         break;
                     case "23":
                         EditarEnvase();
+                        break;
+                    case "24":
+                        ListarEnvasesConCantidadPlantas();
                         break;
                     case "30":
                         ListadoProveedores();
@@ -138,12 +157,428 @@ namespace ViveroEF2024.Consola
             }
         }
 
+        private static void ListarEnvasesConCantidadPlantas()
+        {
+            var servicio = servicioProvider?
+                .GetService<ITiposDeEnvasesService>();
+            var listaEnvasesConCantidad = servicio.CantidadDePlantasPorTipoDeEnvase();
+            Console.Clear();
+            foreach (var item in listaEnvasesConCantidad)
+            {
+                Console.WriteLine($"{item.Envase} : {item.CantidadDePlantas}");
+            }
+            ConsoleExtensions.EsperaEnter();
+        }
+
+        private static void PlantasAgrupadasPorTipoDePlanta()
+        {
+            var servicePlantas = servicioProvider?.GetService<IPlantasService>();
+            var serviceTipo = servicioProvider?.GetService<ITiposDePlantasService>();
+            if (servicePlantas == null)
+            {
+                Console.WriteLine("Servicio de plantas no disponible.");
+                return;
+            }
+
+            var agrupaciones = servicePlantas.GetPlantasAgrupadasPorTipoDePlanta();
+
+            foreach (var grupo in agrupaciones)
+            {
+                Console.Clear();
+                Console.WriteLine($"Tipo de Planta: {grupo.Key} {serviceTipo?.GetTipoDePlantaPorId(grupo.Key).Descripcion}");
+                foreach (var planta in grupo)
+                {
+                    Console.WriteLine($"  - Planta: {planta.Descripcion}, Precio: {planta.PrecioVenta}");
+                }
+                Console.WriteLine($"Cantidad: {grupo.Count()}");
+                Console.WriteLine($"Precio Prom:{grupo.Average(p=>p.PrecioVenta)}");
+                ConsoleExtensions.EsperaEnter();
+            }
+            Console.WriteLine("Fin del listado");
+            ConsoleExtensions.EsperaEnter();
+        }
+
+        private static void EditarPlanta()
+        {
+            Console.Clear();
+            var servicioPlantas = servicioProvider?.GetService<IPlantasService>();
+            var servicioProveedores = servicioProvider?.GetService<IProveedoresService>();
+
+            // Obtener la planta a editar
+            var plantaId = ConsoleExtensions.ReadInt("Ingrese el ID de la planta a editar:");
+            var planta = servicioPlantas?.GetPlantaPorId(plantaId);
+
+            if (planta == null)
+            {
+                Console.WriteLine("Planta no encontrada.");
+                return;
+            }
+            Console.WriteLine($"Planta: {planta.Descripcion}");
+            Console.WriteLine($"Tipo de Planta: {planta.TipoDePlanta.Descripcion}");
+            Console.WriteLine($"Tipo de Envase: {planta.TipoDeEnvase.Descripcion}");
+            Console.WriteLine($"Precio: {planta.PrecioVenta}");
+            // Editar los detalles de la planta
+            planta.Descripcion = ConsoleExtensions.ReadString("Ingrese la nueva descripción:");
+            planta.PrecioCosto = ConsoleExtensions.ReadDecimal("Ingrese el nuevo precio de costo:");
+            planta.PrecioVenta = ConsoleExtensions.ReadDecimal("Ingrese el nuevo precio de venta:");
+            // Agregar más propiedades si es necesario
+
+            // Listar proveedores existentes
+            var listaProveedores = servicioProveedores?.GetLista();
+            Console.WriteLine("Proveedores disponibles:");
+            foreach (var proveedor in listaProveedores)
+            {
+                Console.WriteLine($"ID: {proveedor.ProveedorId}, Nombre: {proveedor.Nombre}");
+            }
+
+            // Asignar un nuevo proveedor
+            var proveedorId = ConsoleExtensions
+                .ReadInt("Ingrese el ID del nuevo proveedor (0 para omitir):");
+
+            try
+            {
+                if (proveedorId == 0)
+                {
+                    servicioPlantas?.Editar(planta, null);
+                }
+                else
+                {
+                    servicioPlantas?.Editar(planta, proveedorId);
+                }
+
+                Console.WriteLine("Planta actualizada exitosamente.");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error: {ex.Message}");
+            }
+
+
+        }
+
+        private static void BorrarPlanta()
+        {
+            var servicio = servicioProvider?.GetService<IPlantasService>();
+            Console.Clear();
+            Console.WriteLine("Ingreso Planta a borrar");
+            ListarPlantas();
+            var listaChar = servicio?
+                    .GetLista()
+                    .Select(x => x.PlantaId.ToString()).ToList();
+            var plantaId = ConsoleExtensions
+                .GetValidOptions("Ingrese un ID de planta:", listaChar);
+
+
+            try
+            {
+                var planta = servicio?.GetPlantaPorId(Convert.ToInt32(plantaId));
+                if (planta != null)
+                {
+                    if (servicio != null)
+                    {
+
+                        servicio.Borrar(planta);
+                        Console.WriteLine("Registro borrado!!!");
+
+                    }
+
+                    else
+                    {
+                        throw new Exception("Servicio no disponible");
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("Planta inexistente!!!");
+                }
+            }
+            catch (Exception ex)
+            {
+
+                Console.WriteLine(ex.Message); ;
+            }
+            Thread.Sleep(5000);
+
+        }
+
+        private static void AsignarProveedorPlanta()
+        {
+            // Inicializar el servicio y el proveedor
+            var plantasService = servicioProvider?.GetService<IPlantasService>();
+            var proveedoresService = servicioProvider?.GetService<IProveedoresService>();
+
+            if (plantasService == null || proveedoresService == null)
+            {
+                Console.WriteLine("Servicios no disponibles.");
+                return;
+            }
+
+            // Obtener las plantas sin proveedor asignado
+            var plantasSinProveedor = plantasService.GetPlantasSinProveedor();
+            if (plantasSinProveedor.Count>0)
+            {
+                MostrarListaPlantas(plantasSinProveedor);
+                // Solicitar al usuario seleccionar una planta de la lista
+                var opcionPlanta = ConsoleExtensions.GetValidOptions("Seleccione una planta:",
+                    plantasSinProveedor.Select(x => x.PlantaId.ToString()).ToList());
+
+                var plantaSinProveedor = plantasService
+                    .GetPlantaPorId(Convert.ToInt32(opcionPlanta));
+
+                // Verificar si se encontró una planta sin proveedor
+                if (plantaSinProveedor != null)
+                {
+                    // Mostrar la planta sin proveedor
+                    Console.WriteLine("Planta sin proveedor encontrado:");
+                    Console.WriteLine($"ID: {plantaSinProveedor.PlantaId}");
+                    Console.WriteLine($"Descripción: {plantaSinProveedor.Descripcion}");
+                    Console.WriteLine();
+
+                    // Obtener la lista de proveedores
+                    var listaProveedores = proveedoresService.GetLista();
+
+                    // Mostrar la lista de proveedores
+                    Console.WriteLine("Lista de proveedores:");
+                    foreach (var proveedor in listaProveedores)
+                    {
+                        Console.WriteLine($"ID: {proveedor.ProveedorId}, Nombre: {proveedor.Nombre}");
+                    }
+                    Console.WriteLine();
+
+                    // Solicitar al usuario seleccionar un proveedor existente o crear uno nuevo
+                    var opcion = ConsoleExtensions.GetValidOptions("Seleccione un proveedor (N para nuevo):",
+                        listaProveedores.Select(x => x.ProveedorId.ToString()).ToList());
+
+                    if (opcion == "N")
+                    {
+                        // Crear un nuevo proveedor
+                        var nombreProveedor = ConsoleExtensions.ReadString("Nombre del nuevo proveedor:");
+                        var direccionProveedor = ConsoleExtensions.ReadString("Dirección del nuevo proveedor:");
+                        var telefonoProveedor = ConsoleExtensions.ReadString("Teléfono del nuevo proveedor:");
+                        var emailProveedor = ConsoleExtensions.ReadString("Email del nuevo proveedor:");
+
+                        Proveedor nuevoProveedor = new Proveedor
+                        {
+                            Nombre = nombreProveedor,
+                            Direccion = direccionProveedor,
+                            Telefono = telefonoProveedor,
+                            Email = emailProveedor
+                        };
+
+                        // Asignar el proveedor a la planta
+                        plantasService
+                            .AsignarProveedorAPlanta(plantaSinProveedor,
+                            nuevoProveedor);
+                    }
+                    else
+                    {
+                        // Obtener el proveedor seleccionado
+                        var proveedorSeleccionado = listaProveedores
+                            .FirstOrDefault(x => x.ProveedorId.ToString() == opcion);
+
+                        // Asignar el proveedor existente a la planta
+                        plantasService.AsignarProveedorAPlanta(plantaSinProveedor,
+                            proveedorSeleccionado);
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("No se encontraron plantas sin proveedor.");
+                }
+
+            }
+            else
+            {
+                Console.WriteLine("No hay planta sin proveedor!!!");
+            }
+            ConsoleExtensions.EsperaEnter();
+        }
+
+        private static void AgregarPlantaConProveedor()
+        {
+            var servicioPlantas = servicioProvider?.GetService<IPlantasService>();
+            var servicioProveedores = servicioProvider?.GetService<IProveedoresService>();
+
+            if (servicioPlantas == null || servicioProveedores == null)
+            {
+                Console.WriteLine("Servicios no disponibles.");
+                return;
+            }
+
+            Planta planta = CrearPlanta();
+
+            ListadoProveedores();
+            var listaChar = servicioProveedores
+                .GetLista()
+                .Select(x => x.ProveedorId.ToString()).ToList();
+            var proveedorId = ConsoleExtensions
+                .GetValidOptions("Ingrese un ID de proveedor (N para nuevo):", listaChar);
+
+            if (proveedorId == "N")
+            {
+                var nombreProveedor = ConsoleExtensions.ReadString("Proveedor:");
+                var direccion = ConsoleExtensions.ReadString("Dirección:");
+                var telefono = ConsoleExtensions.ReadString("Teléfono:");
+                var mail = ConsoleExtensions.ReadString("Mail:");
+
+                Proveedor nuevoProveedor = new Proveedor
+                {
+                    Nombre = nombreProveedor,
+                    Direccion=direccion,
+                    Email=mail,
+                    Telefono=telefono
+                };
+
+                var pp = new ProveedorPlanta
+                {
+                    Planta = planta,
+                    Proveedor = nuevoProveedor
+                };
+                planta.ProveedoresPlantas.Add(pp);
+                servicioPlantas.GuardarConProveedor(planta, nuevoProveedor);
+                Console.WriteLine("Planta agregada con nuevo proveedor!");
+            }
+            else
+            {
+                int proveedorIdInt = Convert.ToInt32(proveedorId);
+                Proveedor? proveedorExistente = servicioProveedores
+                    .GetProveedorPorId(proveedorIdInt, true);
+                if (proveedorExistente != null)
+                {
+                    var pp = new ProveedorPlanta
+                    {
+                        Planta = planta,
+                        Proveedor = proveedorExistente
+                    };
+                    planta.ProveedoresPlantas.Add(pp);
+
+                    servicioPlantas.GuardarConProveedor(planta, proveedorExistente);
+                    Console.WriteLine("Planta agregada con proveedor existente!");
+                }
+                else
+                {
+                    Console.WriteLine("Proveedor no encontrado.");
+                }
+            }
+        }
+
+        private static Planta CrearPlanta()
+        {
+            var servicioEnvase = servicioProvider?.GetService<ITiposDeEnvasesService>();
+            var servicioTipoPlanta = servicioProvider?.GetService<ITiposDePlantasService>();
+
+            TipoDePlanta? tipoDePlanta;
+            TipoDeEnvase? tipoDeEnvase;
+
+            Console.WriteLine("Agregar Planta");
+            var descripcion = ConsoleExtensions.ReadString("Descripción:");
+            ListaDeTiposDePlantas();
+            var listaChar = servicioTipoPlanta?
+                .GetLista()
+                .Select(x => x.TipoDePlantaId.ToString()).ToList();
+            var tipoDePlantaId = ConsoleExtensions
+                .GetValidOptions("Seleccione Tipo de Planta (N para nuevo):", listaChar);
+            if (tipoDePlantaId == "N")
+            {
+                tipoDePlantaId = "0";
+                Console.WriteLine("Ingreso de nuevo tipo de Planta");
+                var tipoDescripcion = ConsoleExtensions.ReadString("Ingrese descripción de tipo de Planta:");
+
+                tipoDePlanta = new TipoDePlanta()
+                {
+                    TipoDePlantaId = 0,
+                    Descripcion = tipoDescripcion
+                };
+
+            }
+            else
+            {
+                tipoDePlanta = servicioTipoPlanta?
+                    .GetTipoDePlantaPorId(Convert.ToInt32(tipoDePlantaId));
+
+            }
+            ListadoDeEnvases();
+            var listaEnvaseChar = servicioEnvase?.GetLista()
+                .Select(x => x.TipoDeEnvaseId.ToString()).ToList();
+            var tipoDeEnvaseId = ConsoleExtensions.GetValidOptions("Seleccione Tipo de Envase (N para nuevo):",
+                listaEnvaseChar);
+
+            if (tipoDeEnvaseId == "N")
+            {
+                tipoDeEnvaseId = "0";
+                Console.WriteLine("Ingreso de nuevo tipo de Envase");
+                var tipoDescripcion = ConsoleExtensions.ReadString("Ingrese descripción de tipo de Envase:");
+
+                tipoDeEnvase = new TipoDeEnvase()
+                {
+                    TipoDeEnvaseId = 0,
+                    Descripcion = tipoDescripcion
+                };
+
+            }
+            else
+            {
+                tipoDeEnvase = servicioEnvase?
+                    .GetEnvasePorId(Convert.ToInt32(tipoDeEnvaseId));
+            }
+
+
+            var precioCosto = ConsoleExtensions
+                .ReadDecimal("Ingrese un precio de Costo:", 1, 10000);
+            var precioVenta = ConsoleExtensions.ReadDecimal("Ingrese el precio de venta:",
+                precioCosto + 1, 20000);
+
+            var planta = new Planta()
+            {
+                Descripcion = descripcion,
+                TipoDePlantaId = Convert.ToInt32(tipoDePlantaId),
+                TipoDeEnvaseId = Convert.ToInt32(tipoDeEnvaseId),
+                TipoDePlanta = tipoDePlanta,
+                TipoDeEnvase = tipoDeEnvase,
+                PrecioCosto = precioCosto,
+                PrecioVenta = precioVenta,
+
+            };
+            return planta;
+        }
+
         private static void ListarProveedorConPlantas()
         {
+            var servicio = servicioProvider?
+                .GetService<IProveedoresService>();
             Console.Clear();
             Console.WriteLine("Plantas por Proveedor");
             ListadoProveedores();
-            var proveedorId = ConsoleExtensions.ReadInt("Ingrese ID del proveedor:");
+            var listaChar = servicio?
+                .GetLista()
+                .Select(x => x.ProveedorId.ToString()).ToList();
+
+            var proveedorId = ConsoleExtensions
+                .GetValidOptions("Seleccione ID de proveedor:", listaChar);
+            Proveedor proveedor = servicio.GetProveedorPorId(
+                    Convert.ToInt32(proveedorId), true);
+            if (proveedor is null)
+            {
+                Console.WriteLine("Proveedor inexistente!!");
+                ConsoleExtensions.EsperaEnter();
+                return;
+            }
+            Console.Clear();
+            Console.WriteLine($"Proveedor: {proveedor.Nombre}");
+            var tabla = new ConsoleTable("ID", "Planta","Precio");
+            if (proveedor.ProveedoresPlantas != null)
+            {
+                foreach (var item in proveedor.ProveedoresPlantas)
+                {
+                    tabla.AddRow(item.Planta.PlantaId,
+                        item.Planta.Descripcion,
+                        item.Planta.PrecioVenta);
+                }
+                tabla.Options.EnableCount = false;
+                tabla.Write();
+
+            }
+
         }
 
         private static void ListadoProveedores()
@@ -256,82 +691,8 @@ namespace ViveroEF2024.Consola
         private static void AgregarPlanta()
         {
             Console.Clear();
-            var servicioTipoPlanta = servicioProvider?.GetService<ITiposDePlantasService>();
-            var servicioEnvase = servicioProvider?.GetService<ITiposDeEnvasesService>();
             var servicioPlantas = servicioProvider?.GetService<IPlantasService>();
-
-            TipoDePlanta? tipoDePlanta;
-            TipoDeEnvase? tipoDeEnvase;
-
-            Console.WriteLine("Agregar Planta");
-            var descripcion = ConsoleExtensions.ReadString("Descripción:");
-            ListaDeTiposDePlantas();
-            var listaChar = servicioTipoPlanta?
-                .GetLista()
-                .Select(x => x.TipoDePlantaId.ToString()).ToList();
-            var tipoDePlantaId = ConsoleExtensions
-                .GetValidOptions("Seleccione Tipo de Planta (N para nuevo):", listaChar);
-            if (tipoDePlantaId == "N")
-            {
-                tipoDePlantaId = "0";
-                Console.WriteLine("Ingreso de nuevo tipo de Planta");
-                var tipoDescripcion = ConsoleExtensions.ReadString("Ingrese descripción de tipo de Planta:");
-
-                tipoDePlanta = new TipoDePlanta()
-                {
-                    TipoDePlantaId = 0,
-                    Descripcion = tipoDescripcion
-                };
-
-            }
-            else
-            {
-                tipoDePlanta = servicioTipoPlanta?
-                    .GetTipoDePlantaPorId(Convert.ToInt32(tipoDePlantaId));
-
-            }
-            ListadoDeEnvases();
-            var listaEnvaseChar = servicioEnvase?.GetLista()
-                .Select(x => x.TipoDeEnvaseId.ToString()).ToList();
-            var tipoDeEnvaseId = ConsoleExtensions.GetValidOptions("Seleccione Tipo de Envase (N para nuevo):",
-                listaEnvaseChar);
-
-            if (tipoDeEnvaseId == "N")
-            {
-                tipoDeEnvaseId = "0";
-                Console.WriteLine("Ingreso de nuevo tipo de Envase");
-                var tipoDescripcion = ConsoleExtensions.ReadString("Ingrese descripción de tipo de Envase:");
-
-                tipoDeEnvase = new TipoDeEnvase()
-                {
-                    TipoDeEnvaseId = 0,
-                    Descripcion = tipoDescripcion
-                };
-
-            }
-            else
-            {
-                tipoDeEnvase = servicioEnvase?
-                    .GetEnvasePorId(Convert.ToInt32(tipoDeEnvaseId));
-            }
-
-
-            var precioCosto = ConsoleExtensions
-                .ReadDecimal("Ingrese un precio de Costo:", 1, 10000);
-            var precioVenta = ConsoleExtensions.ReadDecimal("Ingrese el precio de venta:",
-                precioCosto + 1, 20000);
-
-            var planta = new Planta()
-            {
-                Descripcion = descripcion,
-                TipoDePlantaId = Convert.ToInt32(tipoDePlantaId),
-                TipoDeEnvaseId = Convert.ToInt32(tipoDeEnvaseId),
-                TipoDePlanta = tipoDePlanta,
-                TipoDeEnvase = tipoDeEnvase,
-                PrecioCosto = precioCosto,
-                PrecioVenta = precioVenta,
-
-            };
+            var planta = CrearPlanta();
             if (servicioPlantas != null)
             {
                 if (!servicioPlantas.Existe(planta))

@@ -19,5 +19,9 @@ namespace ViveroEF2024.Datos.Interfaces
         List<PlantaListDto> GetListaDto();
         Planta? GetPlantaPorId(int plantaId);
         List<Planta>? GetPlantas(TipoDePlanta? tipoDePlanta);
+        List<PlantaListDto>? GetPlantasSinProveedor();
+        void AgregarProveedorPlanta(ProveedorPlanta nuevaRelacion);
+        void Editar(Planta planta, int? proveedorId);
+        IEnumerable<IGrouping<int, Planta>> GetPlantasAgrupadasPorTipoDePlanta();
     }
 }

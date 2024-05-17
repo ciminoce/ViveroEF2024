@@ -44,7 +44,7 @@ namespace ViveroEF2024.Datos.Repositories
         }
         public void Borrar(Planta planta)
         {
-            throw new NotImplementedException();
+            _context.Plantas.Remove(planta);
         }
 
         public void Editar(Planta planta)
@@ -241,5 +241,37 @@ namespace ViveroEF2024.Datos.Repositories
             return null;
         }
 
+        public List<PlantaListDto> GetPlantasSinProveedor()
+        {
+            return _context.Plantas
+                .Include(p => p.TipoDePlanta)
+                .Include(p => p.TipoDeEnvase)
+                .Where(p => !p.ProveedoresPlantas.Any())
+                .Select(p => new PlantaListDto
+                {
+                    PlantaId = p.PlantaId,
+                    Nombre = p.Descripcion,
+                    Envase = p.TipoDeEnvase.Descripcion,
+                    Tipo = p.TipoDePlanta.Descripcion,
+                    Precio = p.PrecioVenta
+                })
+                .ToList();
+        }
+
+        public void AgregarProveedorPlanta(ProveedorPlanta nuevaRelacion)
+        {
+            _context.Set<ProveedorPlanta>().Add(nuevaRelacion);
+        }
+
+        public void Editar(Planta planta, int? proveedorId)
+        {
+            _context.Plantas.Update(planta);
+        }
+
+        public IEnumerable<IGrouping<int, Planta>> GetPlantasAgrupadasPorTipoDePlanta()
+        {
+            return _context.Plantas.GroupBy(p => p.TipoDePlantaId)
+                .ToList();
+        }
     }
 }

@@ -8,7 +8,6 @@ namespace ViveroEF2024.Servicios.Intefaces
         void Borrar(Proveedor proveedor);
         bool Existe(Proveedor proveedor);
         List<Proveedor> GetLista();
-        Proveedor? GetProveedorPorId(int id);
-
+        Proveedor? GetProveedorPorId(int id, bool incluyePlantas = false);
     }
 }

@@ -1,4 +1,5 @@
 ﻿using ViveroEF2024.Entidades;
+using ViveroEF2024.Entidades.Dto;
 
 namespace ViveroEF2024.Datos.Interfaces
 {
@@ -12,5 +13,6 @@ namespace ViveroEF2024.Datos.Interfaces
         TipoDeEnvase? GetTipoDeEnvasePorNombre(string tipoDeEnvase);
         List<TipoDeEnvase> GetLista();
         bool EstaRelacionado(TipoDeEnvase tipoDeEnvase);
+        IEnumerable<EnvaseConCantidadDePlantasDTO> CantidadDePlantasPorTipoDeEnvase();
     }
 }

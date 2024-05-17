@@ -1,6 +1,7 @@
 ﻿using ViveroEF2024.Datos;
 using ViveroEF2024.Datos.Interfaces;
 using ViveroEF2024.Entidades;
+using ViveroEF2024.Entidades.Dto;
 using ViveroEF2024.Servicios.Intefaces;
 
 namespace ViveroEF2024.Servicios.Servicios
@@ -30,6 +31,11 @@ namespace ViveroEF2024.Servicios.Servicios
                 _unitOfWork?.Rollback();
                 throw;
             }        }
+
+        public IEnumerable<EnvaseConCantidadDePlantasDTO> CantidadDePlantasPorTipoDeEnvase()
+        {
+            return _repository.CantidadDePlantasPorTipoDeEnvase();
+        }
 
         public bool EstaRelacionado(TipoDeEnvase tipoDeEnvase)
         {

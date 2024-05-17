@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ViveroEF2024.Datos.Interfaces;
 using ViveroEF2024.Entidades;
+using ViveroEF2024.Entidades.Dto;
 
 namespace ViveroEF2024.Datos.Repositories
 {
@@ -21,6 +22,21 @@ namespace ViveroEF2024.Datos.Repositories
         public void Borrar(TipoDeEnvase tipoDeEnvase)
         {
             _context.TiposDeEnvases.Remove(tipoDeEnvase);
+        }
+
+        public IEnumerable<EnvaseConCantidadDePlantasDTO> CantidadDePlantasPorTipoDeEnvase()
+        {
+            var query = from envase in _context.TiposDeEnvases
+                        join planta in _context.Plantas
+                        on envase.TipoDeEnvaseId equals planta.TipoDeEnvaseId
+                        into plantasJoin
+                        select new EnvaseConCantidadDePlantasDTO
+                        {
+                            Envase = envase.Descripcion,
+                            CantidadDePlantas = plantasJoin.Count()
+                        };
+
+            return query.ToList();
         }
 
         public void Editar(TipoDeEnvase tipoDeEnvase)

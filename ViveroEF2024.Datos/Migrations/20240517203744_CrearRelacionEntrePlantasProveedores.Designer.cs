@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ViveroEF2024.Datos;
 
@@ -10,9 +11,11 @@ using ViveroEF2024.Datos;
 namespace ViveroEF2024.Datos.Migrations
 {
     [DbContext(typeof(ViveroDbContext))]
-    partial class ViveroDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240517203744_CrearRelacionEntrePlantasProveedores")]
+    partial class CrearRelacionEntrePlantasProveedores
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

@@ -7,5 +7,6 @@
         public string Direccion { get; set; } = null!;
         public string Telefono { get; set; } = null!;
         public string Email { get; set; } = null!;
+        public ICollection<ProveedorPlanta> ProveedoresPlantas { get; set; } = new List<ProveedorPlanta>();
     }
 }

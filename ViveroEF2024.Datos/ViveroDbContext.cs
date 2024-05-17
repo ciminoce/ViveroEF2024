@@ -17,6 +17,7 @@ public partial class ViveroDbContext : DbContext
     public DbSet<Proveedor> Proveedores { get; set; }
     public DbSet<TipoDePlanta> TiposDePlantas { get; set; }
     public DbSet<TipoDeEnvase> TiposDeEnvases { get; set; }
+    public DbSet<ProveedorPlanta> ProveedoresPlantas { get; set; }
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
 
@@ -85,7 +86,26 @@ public partial class ViveroDbContext : DbContext
                  Telefono = "422222",
                  Email = "proveedor2@gmail.com"
              });
+
+
         });
+        modelBuilder.Entity<ProveedorPlanta>(entity =>
+        {
+            entity.HasKey(pp => new { pp.ProveedorId, 
+                pp.PlantaId });
+
+            entity.HasOne(pp => pp.Proveedor)
+                .WithMany(p => p.ProveedoresPlantas)
+                .HasForeignKey(pp => pp.ProveedorId);
+
+            entity.HasOne(pp => pp.Planta)
+                .WithMany(p => p.ProveedoresPlantas)
+                .HasForeignKey(pp => pp.PlantaId);
+
+        });
+
+
+
         OnModelCreatingPartial(modelBuilder);
     }
 

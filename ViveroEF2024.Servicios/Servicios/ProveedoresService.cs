@@ -87,11 +87,11 @@ namespace ViveroEF2024.Servicios.Servicios
             }
         }
 
-        public Proveedor? GetProveedorPorId(int id)
+        public Proveedor? GetProveedorPorId(int id, bool incluyePlantas = false)
         {
             try
             {
-                return _repository.GetProveedorPorId(id);
+                return _repository.GetProveedorPorId(id,incluyePlantas);
             }
             catch (Exception)
             {

@@ -78,8 +78,10 @@ namespace ViveroEF2024.Datos.Repositories
                 .FirstOrDefault(t => t.TipoDePlantaId == tipoDePlantaId);
         }
 
-
-
+        public List<Planta>? GetPlantas(TipoDePlanta? tipoDePlanta)
+        {
+            throw new NotImplementedException();
+        }
     }
 
 }

@@ -10,7 +10,7 @@
         int GetCantidad();
         List<TipoDePlanta> GetLista();
         TipoDePlanta? GetPlantaPorNombre(string tipoDescripcion);
-        
+        List<Planta>? GetPlantas(TipoDePlanta? tipoDePlanta);
         TipoDePlanta? GetTipoDePlantaPorId(int tipoDePlantaId);
     }
 }

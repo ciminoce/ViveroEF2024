@@ -1,5 +1,6 @@
 ﻿using ViveroEF2024.Datos;
 using ViveroEF2024.Datos.Interfaces;
+using ViveroEF2024.Datos.Repositories;
 using ViveroEF2024.Entidades;
 using ViveroEF2024.Entidades.Dto;
 using ViveroEF2024.Entidades.Enums;
@@ -10,12 +11,15 @@ namespace ViveroEF2024.Servicios.Servicios
     public class PlantasService : IPlantasService
     {
         private readonly IPlantasRepository _repository;
+        private readonly IProveedoresRepository _proveedorRepository;
         private readonly IUnitOfWork _unitOfWork;
         public PlantasService(IPlantasRepository repository, 
-            IUnitOfWork unitOfWork)
+            IUnitOfWork unitOfWork,
+            IProveedoresRepository proveedorRepository)
         {
             _repository = repository ?? throw new ArgumentNullException(nameof(repository));
             _unitOfWork = unitOfWork;
+            _proveedorRepository = proveedorRepository;
         }
 
         public void Borrar(Planta planta)
@@ -23,15 +27,29 @@ namespace ViveroEF2024.Servicios.Servicios
             try
             {
                 _unitOfWork.BeginTransaction();
-                _repository.Borrar(planta);
-                _unitOfWork.Commit();
 
+                // Eliminar las relaciones de
+                // la planta con los proveedores
+                if (planta.ProveedoresPlantas != null)
+                {
+                    foreach (var proveedorPlanta in 
+                        planta.ProveedoresPlantas.ToList())
+                    {
+                        planta.ProveedoresPlantas
+                            .Remove(proveedorPlanta);
+                    }
+                }
+
+                // Eliminar la planta
+                _repository.Borrar(planta);
+
+                _unitOfWork.Commit();
             }
             catch (Exception)
             {
                 _unitOfWork.Rollback();
                 throw;
-            } 
+            }
         }
 
         public bool Existe(Planta planta)
@@ -93,6 +111,117 @@ namespace ViveroEF2024.Servicios.Servicios
         public Planta? GetPlantaPorId(int plantaId)
         {
             return _repository.GetPlantaPorId(plantaId);
+        }
+
+        public void GuardarConProveedor(Planta planta, Proveedor proveedor)
+        {
+
+            try
+            {
+                _unitOfWork.BeginTransaction();
+                // Agrega la planta
+                _repository.Agregar(planta);
+
+                // Agrega el proveedor
+                if (proveedor.ProveedorId==0)
+                {
+                    _proveedorRepository.Agregar(proveedor);
+
+                }
+                // Guardar los cambios en la base de datos
+                _unitOfWork.Commit();
+            }
+            catch (Exception ex)
+            {
+                // En caso de error, revertir la transacción
+                _unitOfWork.Rollback();
+                throw;
+            }
+
+        }
+
+        public List<PlantaListDto>? GetPlantasSinProveedor()
+        {
+            return _repository.GetPlantasSinProveedor();
+        }
+
+        public void AsignarProveedorAPlanta(Planta planta,
+            Proveedor proveedor)
+        {
+            try
+            {
+                _unitOfWork.BeginTransaction();
+
+
+                // Crear una nueva relación entre la planta y el proveedor
+                ProveedorPlanta nuevaRelacion = new ProveedorPlanta
+                {
+                    Planta = planta,
+                    Proveedor = proveedor
+                };
+
+                _repository.AgregarProveedorPlanta(nuevaRelacion);
+                _unitOfWork.Commit();
+            }
+            catch (Exception)
+            {
+                _unitOfWork.Rollback();
+                throw;
+            }
+        }
+
+        public void Editar(Planta planta, int? proveedorId = null)
+        {
+            try
+            {
+                _unitOfWork.BeginTransaction();
+
+                // Editar la planta
+                _repository.Editar(planta);
+
+                if (proveedorId.HasValue)
+                {
+                    // Buscar el proveedor
+                    var proveedor = _proveedorRepository
+                        .GetProveedorPorId(proveedorId.Value);
+                    if (proveedor != null)
+                    {
+                        // Crear la nueva relación si no existe
+                        if (!planta.ProveedoresPlantas
+                            .Any(pp => pp.ProveedorId == proveedorId))
+                        {
+                            var nuevaRelacion = new ProveedorPlanta
+                            {
+                                PlantaId = planta.PlantaId,
+                                ProveedorId = proveedor.ProveedorId
+                            };
+                            _proveedorRepository.AgregarProveedorPlanta(nuevaRelacion);
+
+                        }
+                    }
+                    else
+                    {
+                        throw new Exception("Proveedor no encontrado.");
+                    }
+                }
+
+                _unitOfWork.Commit();
+            }
+            catch (Exception)
+            {
+                _unitOfWork.Rollback();
+                throw;
+            }
+        }
+
+        public IEnumerable<object> GetPlantasAgrupadasPorTipoDePlanta()
+        {
+            throw new NotImplementedException();
+        }
+
+        IEnumerable<IGrouping<int, Planta>> IPlantasService.GetPlantasAgrupadasPorTipoDePlanta()
+        {
+            return _repository.GetPlantasAgrupadasPorTipoDePlanta();
         }
     }
 }

@@ -15,4 +15,5 @@ public partial class Planta
     public int TipoDeEnvaseId { get; set; }
     public TipoDePlanta? TipoDePlanta { get; set; } 
     public TipoDeEnvase? TipoDeEnvase { get; set; }
+    public ICollection<ProveedorPlanta> ProveedoresPlantas { get; set; } = new List<ProveedorPlanta>();
 }

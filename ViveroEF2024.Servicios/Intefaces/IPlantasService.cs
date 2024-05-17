@@ -19,5 +19,10 @@ namespace ViveroEF2024.Servicios.Intefaces
         bool Existe(Planta planta);
         List<PlantaListDto> GetListaDto();
         Planta? GetPlantaPorId(int plantaId);
+        void GuardarConProveedor(Planta planta, Proveedor nuevoProveedor);
+        List<PlantaListDto>? GetPlantasSinProveedor();
+        void AsignarProveedorAPlanta(Planta plantaSinProveedor, Proveedor nuevoProveedor);
+        void Editar(Planta planta, int? proveedorId);
+        IEnumerable<IGrouping<int, Planta>> GetPlantasAgrupadasPorTipoDePlanta();
     }
 }
