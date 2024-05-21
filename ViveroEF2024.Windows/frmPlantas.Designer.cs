@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            DataGridViewCellStyle dataGridViewCellStyle3 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
             panelGrilla = new Panel();
             dgvDatos = new DataGridView();
             colPlanta = new DataGridViewTextBoxColumn();
@@ -64,6 +64,9 @@
             btnSiguiente = new Button();
             btnAnterior = new Button();
             btnPrimero = new Button();
+            toolStripButton1 = new ToolStripButton();
+            toolStripButton2 = new ToolStripButton();
+            toolStripSeparator4 = new ToolStripSeparator();
             panelGrilla.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvDatos).BeginInit();
             panelToolBar.SuspendLayout();
@@ -84,8 +87,8 @@
             // 
             dgvDatos.AllowUserToAddRows = false;
             dgvDatos.AllowUserToDeleteRows = false;
-            dataGridViewCellStyle3.BackColor = Color.FromArgb(224, 224, 224);
-            dgvDatos.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle1.BackColor = Color.FromArgb(224, 224, 224);
+            dgvDatos.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
             dgvDatos.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dgvDatos.Columns.AddRange(new DataGridViewColumn[] { colPlanta, colTipoPlanta, colTipoEnvase, colPrecio });
             dgvDatos.Dock = DockStyle.Fill;
@@ -138,7 +141,7 @@
             // 
             // toolStrip1
             // 
-            toolStrip1.Items.AddRange(new ToolStripItem[] { tsbNuevo, tsbBorrar, tsbEditar, toolStripSeparator1, tsbFiltrar, tsbActualizar, toolStripSeparator2, tsbOrden, toolStripSeparator3, tsbCerrar });
+            toolStrip1.Items.AddRange(new ToolStripItem[] { tsbNuevo, tsbBorrar, tsbEditar, toolStripSeparator1, tsbFiltrar, tsbActualizar, toolStripSeparator2, toolStripButton1, toolStripButton2, toolStripSeparator4, tsbOrden, toolStripSeparator3, tsbCerrar });
             toolStrip1.Location = new Point(0, 0);
             toolStrip1.Name = "toolStrip1";
             toolStrip1.Size = new Size(800, 62);
@@ -198,7 +201,7 @@
             // 
             porTipoDeEnvaseToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { tcboTiposDeEnvases });
             porTipoDeEnvaseToolStripMenuItem.Name = "porTipoDeEnvaseToolStripMenuItem";
-            porTipoDeEnvaseToolStripMenuItem.Size = new Size(180, 22);
+            porTipoDeEnvaseToolStripMenuItem.Size = new Size(174, 22);
             porTipoDeEnvaseToolStripMenuItem.Text = "Por Tipo De Envase";
             // 
             // tcboTiposDeEnvases
@@ -212,7 +215,7 @@
             // 
             porTipoDePlantaToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { tcboTiposDePlantas });
             porTipoDePlantaToolStripMenuItem.Name = "porTipoDePlantaToolStripMenuItem";
-            porTipoDePlantaToolStripMenuItem.Size = new Size(180, 22);
+            porTipoDePlantaToolStripMenuItem.Size = new Size(174, 22);
             porTipoDePlantaToolStripMenuItem.Text = "Por Tipo De Planta";
             // 
             // tcboTiposDePlantas
@@ -389,6 +392,31 @@
             btnPrimero.UseVisualStyleBackColor = true;
             btnPrimero.Click += btnPrimero_Click;
             // 
+            // toolStripButton1
+            // 
+            toolStripButton1.Image = Properties.Resources.supplier_40px;
+            toolStripButton1.ImageScaling = ToolStripItemImageScaling.None;
+            toolStripButton1.ImageTransparentColor = Color.Magenta;
+            toolStripButton1.Name = "toolStripButton1";
+            toolStripButton1.Size = new Size(76, 59);
+            toolStripButton1.Text = "Proveedores";
+            toolStripButton1.TextImageRelation = TextImageRelation.ImageAboveText;
+            // 
+            // toolStripButton2
+            // 
+            toolStripButton2.Image = Properties.Resources.add_user_male_40px;
+            toolStripButton2.ImageScaling = ToolStripItemImageScaling.None;
+            toolStripButton2.ImageTransparentColor = Color.Magenta;
+            toolStripButton2.Name = "toolStripButton2";
+            toolStripButton2.Size = new Size(83, 59);
+            toolStripButton2.Text = "Agregar Prov.";
+            toolStripButton2.TextImageRelation = TextImageRelation.ImageAboveText;
+            // 
+            // toolStripSeparator4
+            // 
+            toolStripSeparator4.Name = "toolStripSeparator4";
+            toolStripSeparator4.Size = new Size(6, 62);
+            // 
             // frmPlantas
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -448,5 +476,8 @@
         private ToolStripMenuItem porTipoDePlantaToolStripMenuItem;
         private ToolStripComboBox tcboTiposDeEnvases;
         private ToolStripComboBox tcboTiposDePlantas;
+        private ToolStripButton toolStripButton1;
+        private ToolStripButton toolStripButton2;
+        private ToolStripSeparator toolStripSeparator4;
     }
 }

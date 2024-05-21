@@ -37,11 +37,12 @@
             toolStripButton2 = new ToolStripButton();
             toolStripButton3 = new ToolStripButton();
             toolStripSeparator1 = new ToolStripSeparator();
+            tsbConsultar = new ToolStripButton();
             toolStripButton5 = new ToolStripButton();
             toolStripSeparator2 = new ToolStripSeparator();
             toolStripButton6 = new ToolStripButton();
             panelToolBar = new Panel();
-            tsbConsultar = new ToolStripButton();
+            tsbEstadisticas = new ToolStripButton();
             panelGrilla.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvDatos).BeginInit();
             toolStrip1.SuspendLayout();
@@ -90,7 +91,7 @@
             // 
             // toolStrip1
             // 
-            toolStrip1.Items.AddRange(new ToolStripItem[] { toolStripButton1, toolStripButton2, toolStripButton3, toolStripSeparator1, tsbConsultar, toolStripButton5, toolStripSeparator2, toolStripButton6 });
+            toolStrip1.Items.AddRange(new ToolStripItem[] { toolStripButton1, toolStripButton2, toolStripButton3, toolStripSeparator1, tsbConsultar, tsbEstadisticas, toolStripButton5, toolStripSeparator2, toolStripButton6 });
             toolStrip1.Location = new Point(0, 0);
             toolStrip1.Name = "toolStrip1";
             toolStrip1.Size = new Size(800, 62);
@@ -135,6 +136,17 @@
             toolStripSeparator1.Name = "toolStripSeparator1";
             toolStripSeparator1.Size = new Size(6, 62);
             // 
+            // tsbConsultar
+            // 
+            tsbConsultar.Image = Properties.Resources.view_details_40px;
+            tsbConsultar.ImageScaling = ToolStripItemImageScaling.None;
+            tsbConsultar.ImageTransparentColor = Color.Magenta;
+            tsbConsultar.Name = "tsbConsultar";
+            tsbConsultar.Size = new Size(58, 59);
+            tsbConsultar.Text = "Consulta";
+            tsbConsultar.TextImageRelation = TextImageRelation.ImageAboveText;
+            tsbConsultar.Click += tsbConsultar_Click;
+            // 
             // toolStripButton5
             // 
             toolStripButton5.Image = Properties.Resources.Update;
@@ -170,16 +182,15 @@
             panelToolBar.Size = new Size(800, 68);
             panelToolBar.TabIndex = 1;
             // 
-            // tsbConsultar
+            // tsbEstadisticas
             // 
-            tsbConsultar.Image = Properties.Resources.view_details_40px;
-            tsbConsultar.ImageScaling = ToolStripItemImageScaling.None;
-            tsbConsultar.ImageTransparentColor = Color.Magenta;
-            tsbConsultar.Name = "tsbConsultar";
-            tsbConsultar.Size = new Size(58, 59);
-            tsbConsultar.Text = "Consulta";
-            tsbConsultar.TextImageRelation = TextImageRelation.ImageAboveText;
-            tsbConsultar.Click += tsbConsultar_Click;
+            tsbEstadisticas.Image = Properties.Resources.statistics_40px;
+            tsbEstadisticas.ImageScaling = ToolStripItemImageScaling.None;
+            tsbEstadisticas.ImageTransparentColor = Color.Magenta;
+            tsbEstadisticas.Name = "tsbEstadisticas";
+            tsbEstadisticas.Size = new Size(71, 59);
+            tsbEstadisticas.Text = "Estadísticas";
+            tsbEstadisticas.TextImageRelation = TextImageRelation.ImageAboveText;
             // 
             // frmTiposDePlantas
             // 
@@ -217,5 +228,6 @@
         private Panel panelToolBar;
         private DataGridViewTextBoxColumn colTipoPlanta;
         private ToolStripButton tsbConsultar;
+        private ToolStripButton tsbEstadisticas;
     }
 }

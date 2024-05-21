@@ -63,6 +63,16 @@ namespace ViveroEF2024.Windows.Properties {
         /// <summary>
         ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap add_user_male_40px {
+            get {
+                object obj = ResourceManager.GetObject("add_user_male_40px", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap alphabetical_sorting_16px {
             get {
                 object obj = ResourceManager.GetObject("alphabetical_sorting_16px", resourceCulture);
@@ -396,6 +406,26 @@ namespace ViveroEF2024.Windows.Properties {
         internal static System.Drawing.Bitmap shutdown_48px {
             get {
                 object obj = ResourceManager.GetObject("shutdown_48px", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap statistics_40px {
+            get {
+                object obj = ResourceManager.GetObject("statistics_40px", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap supplier_40px {
+            get {
+                object obj = ResourceManager.GetObject("supplier_40px", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

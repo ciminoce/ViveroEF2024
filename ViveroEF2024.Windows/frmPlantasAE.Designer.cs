@@ -47,6 +47,10 @@
             btnAgregarEnvase = new Button();
             lblNuevoTipoDePlanta = new Label();
             lblNuevoTipoDeEnvase = new Label();
+            label6 = new Label();
+            cboProveedores = new ComboBox();
+            btnAgregarProveedor = new Button();
+            label7 = new Label();
             ((System.ComponentModel.ISupportInitialize)errorProvider1).BeginInit();
             SuspendLayout();
             // 
@@ -57,10 +61,10 @@
             // btnCancelar
             // 
             btnCancelar.Image = Properties.Resources.Cancelar;
-            btnCancelar.Location = new Point(412, 265);
+            btnCancelar.Location = new Point(418, 328);
             btnCancelar.Name = "btnCancelar";
             btnCancelar.Size = new Size(105, 54);
-            btnCancelar.TabIndex = 37;
+            btnCancelar.TabIndex = 10;
             btnCancelar.Text = "Cancelar";
             btnCancelar.TextImageRelation = TextImageRelation.ImageAboveText;
             btnCancelar.UseVisualStyleBackColor = true;
@@ -69,10 +73,10 @@
             // btnOk
             // 
             btnOk.Image = (Image)resources.GetObject("btnOk.Image");
-            btnOk.Location = new Point(85, 265);
+            btnOk.Location = new Point(91, 328);
             btnOk.Name = "btnOk";
             btnOk.Size = new Size(289, 54);
-            btnOk.TabIndex = 38;
+            btnOk.TabIndex = 9;
             btnOk.Text = "Ok";
             btnOk.TextImageRelation = TextImageRelation.ImageAboveText;
             btnOk.UseVisualStyleBackColor = true;
@@ -85,7 +89,7 @@
             cboTiposEnvases.Location = new Point(118, 201);
             cboTiposEnvases.Name = "cboTiposEnvases";
             cboTiposEnvases.Size = new Size(272, 23);
-            cboTiposEnvases.TabIndex = 35;
+            cboTiposEnvases.TabIndex = 5;
             cboTiposEnvases.SelectedIndexChanged += cboTiposEnvases_SelectedIndexChanged;
             // 
             // label4
@@ -104,7 +108,7 @@
             cboTiposPlantas.Location = new Point(118, 142);
             cboTiposPlantas.Name = "cboTiposPlantas";
             cboTiposPlantas.Size = new Size(272, 23);
-            cboTiposPlantas.TabIndex = 36;
+            cboTiposPlantas.TabIndex = 3;
             cboTiposPlantas.SelectedIndexChanged += cboTiposPlantas_SelectedIndexChanged;
             // 
             // label3
@@ -121,7 +125,7 @@
             txtPrecioVta.Location = new Point(116, 100);
             txtPrecioVta.Name = "txtPrecioVta";
             txtPrecioVta.Size = new Size(433, 23);
-            txtPrecioVta.TabIndex = 30;
+            txtPrecioVta.TabIndex = 2;
             // 
             // label5
             // 
@@ -137,7 +141,7 @@
             txtPrecioCosto.Location = new Point(116, 59);
             txtPrecioCosto.Name = "txtPrecioCosto";
             txtPrecioCosto.Size = new Size(433, 23);
-            txtPrecioCosto.TabIndex = 31;
+            txtPrecioCosto.TabIndex = 1;
             // 
             // label2
             // 
@@ -154,7 +158,7 @@
             txtPlanta.MaxLength = 100;
             txtPlanta.Name = "txtPlanta";
             txtPlanta.Size = new Size(433, 23);
-            txtPlanta.TabIndex = 32;
+            txtPlanta.TabIndex = 0;
             // 
             // label1
             // 
@@ -171,7 +175,7 @@
             btnAgregarTipoPlanta.Location = new Point(412, 136);
             btnAgregarTipoPlanta.Name = "btnAgregarTipoPlanta";
             btnAgregarTipoPlanta.Size = new Size(57, 32);
-            btnAgregarTipoPlanta.TabIndex = 39;
+            btnAgregarTipoPlanta.TabIndex = 4;
             btnAgregarTipoPlanta.TextImageRelation = TextImageRelation.ImageAboveText;
             btnAgregarTipoPlanta.UseVisualStyleBackColor = true;
             btnAgregarTipoPlanta.Click += btnAgregarTipoPlanta_Click;
@@ -182,7 +186,7 @@
             btnAgregarEnvase.Location = new Point(412, 195);
             btnAgregarEnvase.Name = "btnAgregarEnvase";
             btnAgregarEnvase.Size = new Size(57, 32);
-            btnAgregarEnvase.TabIndex = 40;
+            btnAgregarEnvase.TabIndex = 6;
             btnAgregarEnvase.TextImageRelation = TextImageRelation.ImageAboveText;
             btnAgregarEnvase.UseVisualStyleBackColor = true;
             btnAgregarEnvase.Click += btnAgregarEnvase_Click;
@@ -211,17 +215,63 @@
             lblNuevoTipoDeEnvase.Text = "Nuevo tipo de Envase";
             lblNuevoTipoDeEnvase.Visible = false;
             // 
+            // label6
+            // 
+            label6.AutoSize = true;
+            label6.Location = new Point(56, 267);
+            label6.Name = "label6";
+            label6.Size = new Size(64, 15);
+            label6.TabIndex = 33;
+            label6.Text = "Proveedor:";
+            // 
+            // cboProveedores
+            // 
+            cboProveedores.DropDownStyle = ComboBoxStyle.DropDownList;
+            cboProveedores.FormattingEnabled = true;
+            cboProveedores.Location = new Point(118, 266);
+            cboProveedores.Name = "cboProveedores";
+            cboProveedores.Size = new Size(272, 23);
+            cboProveedores.TabIndex = 7;
+            cboProveedores.SelectedIndexChanged += cboTiposEnvases_SelectedIndexChanged;
+            // 
+            // btnAgregarProveedor
+            // 
+            btnAgregarProveedor.Image = Properties.Resources.plus_24px;
+            btnAgregarProveedor.Location = new Point(412, 260);
+            btnAgregarProveedor.Name = "btnAgregarProveedor";
+            btnAgregarProveedor.Size = new Size(57, 32);
+            btnAgregarProveedor.TabIndex = 8;
+            btnAgregarProveedor.TextImageRelation = TextImageRelation.ImageAboveText;
+            btnAgregarProveedor.UseVisualStyleBackColor = true;
+            btnAgregarProveedor.Click += btnAgregarEnvase_Click;
+            // 
+            // label7
+            // 
+            label7.AutoSize = true;
+            label7.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            label7.ForeColor = Color.Red;
+            label7.Location = new Point(118, 301);
+            label7.Name = "label7";
+            label7.Size = new Size(106, 15);
+            label7.TabIndex = 42;
+            label7.Text = "Nuevo Proveedor";
+            label7.Visible = false;
+            // 
             // frmPlantasAE
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(600, 331);
+            ClientSize = new Size(600, 394);
+            Controls.Add(label7);
             Controls.Add(lblNuevoTipoDeEnvase);
             Controls.Add(lblNuevoTipoDePlanta);
+            Controls.Add(btnAgregarProveedor);
             Controls.Add(btnAgregarEnvase);
             Controls.Add(btnAgregarTipoPlanta);
             Controls.Add(btnCancelar);
             Controls.Add(btnOk);
+            Controls.Add(cboProveedores);
+            Controls.Add(label6);
             Controls.Add(cboTiposEnvases);
             Controls.Add(label4);
             Controls.Add(cboTiposPlantas);
@@ -257,5 +307,9 @@
         private Button btnAgregarEnvase;
         private Label lblNuevoTipoDePlanta;
         private Label lblNuevoTipoDeEnvase;
+        private Label label7;
+        private Button btnAgregarProveedor;
+        private ComboBox cboProveedores;
+        private Label label6;
     }
 }
