@@ -371,16 +371,16 @@ namespace ViveroEF2024.Windows
 
         private void tsbProveedores_Click(object sender, EventArgs e)
         {
-            if (dgvDatos.SelectedRows.Count==0)
+            if (dgvDatos.SelectedRows.Count == 0)
             {
                 return;
             }
-            var r=dgvDatos.SelectedRows[0];
+            var r = dgvDatos.SelectedRows[0];
             if (r.Tag is null) return;
             PlantaListDto plantaDto = (PlantaListDto)r.Tag;
             List<Proveedor>? proveedores = _servicio
                 .GetProveedoresPorPlanta(plantaDto.PlantaId);
-            if (proveedores is null || proveedores.Count==0)
+            if (proveedores is null || proveedores.Count == 0)
             {
                 MessageBox.Show("Planta sin proveedores asignados",
                     "Advertencia",
@@ -388,9 +388,42 @@ namespace ViveroEF2024.Windows
                 return;
             }
             frmDetalleProveedor frm = new frmDetalleProveedor()
-                { Text = $"Proveedores de la planta {plantaDto.Nombre}" };
+            { Text = $"Proveedores de la planta {plantaDto.Nombre}" };
             frm.SetDatos(proveedores);
             frm.ShowDialog(this);
+        }
+
+        private void tsbAsignarProveedor_Click(object sender, EventArgs e)
+        {
+            if (dgvDatos.SelectedRows.Count == 0)
+            {
+                return;
+            }
+            var r = dgvDatos.SelectedRows[0];
+            if (r.Tag is null) return;
+            var plantaDto = (PlantaListDto)r.Tag;
+
+            Planta? planta = _servicio.GetPlantaPorId(plantaDto?.PlantaId ?? 0);
+            if (planta is null) return;
+            frmAgregarProveedor frm = new frmAgregarProveedor(_serviceProvider) { Text = "Agregar Proveedor" };
+            DialogResult dr = frm.ShowDialog(this);
+            if (dr == DialogResult.Cancel) { return; }
+            try
+            {
+                Proveedor? proveedor = frm.GetProveedor();
+                if (proveedor is null) return;
+                _servicio.AsignarProveedorAPlanta(planta, proveedor);
+                MessageBox.Show("Proveedor asignado a la planta!!!",
+                    "Mensaje",
+                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+            }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show(ex.Message);
+            }
+
         }
     }
 }
