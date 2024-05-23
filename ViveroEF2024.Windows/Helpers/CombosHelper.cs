@@ -97,7 +97,6 @@ namespace ViveroEF2024.Windows.Helpers
             // Limpiar el ToolStripComboBox
             cbo.Items.Clear();
             lista?.Insert(0, defaultTipoPlanta);
-            // Agregar los tipos de envases al ToolStripComboBox
             if (lista is not null)
             {
                 foreach (TipoDePlanta tipoDePlanta in lista)
@@ -106,7 +105,6 @@ namespace ViveroEF2024.Windows.Helpers
                 }
 
             }
-            // Seleccionar el primer elemento del ToolStripComboBox si hay elementos
             if (lista?.Count > 0)
             {
                 cbo.SelectedIndex = 0;
