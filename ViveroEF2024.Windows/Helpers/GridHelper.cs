@@ -38,11 +38,12 @@ namespace ViveroEF2024.Windows.Helpers
                     r.Cells[1].Value = planta.Tipo;
                     r.Cells[2].Value=planta.Envase;
                     r.Cells[3].Value = planta.Precio.ToString("C");
+                    r.Cells[4].Value = planta.CantidadProveedores;
                     break;
                 case Planta planta:
                     r.Cells[0].Value = planta.Descripcion;
-                    r.Cells[1].Value = planta.TipoDePlanta.Descripcion;
-                    r.Cells[2].Value = planta.TipoDeEnvase.Descripcion;
+                    r.Cells[1].Value = planta.TipoDePlanta?.Descripcion;
+                    r.Cells[2].Value = planta.TipoDeEnvase?.Descripcion;
                     r.Cells[3].Value = planta.PrecioVenta.ToString("C");
                     break;
 

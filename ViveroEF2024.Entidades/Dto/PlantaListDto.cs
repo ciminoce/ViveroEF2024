@@ -7,5 +7,6 @@
         public string Tipo { get; set; }  =null!;
         public string Envase { get; set; } = null!;
         public decimal Precio { get; set; }
+        public int CantidadProveedores { get; set; }
     }
 }

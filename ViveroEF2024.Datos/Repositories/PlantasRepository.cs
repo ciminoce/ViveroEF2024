@@ -77,7 +77,7 @@ namespace ViveroEF2024.Datos.Repositories
 
         }
 
-        public int GetCantidad(Func<Planta, bool>? filtro=null)
+        public int GetCantidad(Func<Planta, bool>? filtro = null)
         {
             if (filtro != null)
             {
@@ -96,6 +96,7 @@ namespace ViveroEF2024.Datos.Repositories
             IQueryable<Planta> query = _context.Plantas
                 .Include(p => p.TipoDePlanta)
                 .Include(p => p.TipoDeEnvase)
+                .Include(p=>p.ProveedoresPlantas)
                 .AsNoTracking();
 
             // Aplicar filtro si se proporciona un tipo de planta
@@ -147,9 +148,10 @@ namespace ViveroEF2024.Datos.Repositories
                 {
                     PlantaId = p.PlantaId,
                     Nombre = p.Descripcion,
-                    Tipo = p.TipoDePlanta.Descripcion,
-                    Envase = p.TipoDeEnvase.Descripcion,
-                    Precio = p.PrecioVenta
+                    Tipo = p.TipoDePlanta?.Descripcion??"N/A",
+                    Envase = p.TipoDeEnvase?.Descripcion??"N/A",
+                    Precio = p.PrecioVenta,
+                    CantidadProveedores=p.ProveedoresPlantas.Count()
                 })
                 .ToList();
 
@@ -216,9 +218,9 @@ namespace ViveroEF2024.Datos.Repositories
 
         public Planta? GetPlantaPorId(int plantaId)
         {
-            return _context.Plantas.Include(p=>p.TipoDePlanta)
-                .Include(p=>p.TipoDeEnvase)
-                .FirstOrDefault(p=>p.PlantaId==plantaId);
+            return _context.Plantas.Include(p => p.TipoDePlanta)
+                .Include(p => p.TipoDeEnvase)
+                .FirstOrDefault(p => p.PlantaId == plantaId);
         }
 
         public List<Planta>? GetPlantas(TipoDePlanta? tipoDePlanta)
