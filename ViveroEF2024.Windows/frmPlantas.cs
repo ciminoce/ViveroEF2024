@@ -412,16 +412,29 @@ namespace ViveroEF2024.Windows
             {
                 Proveedor? proveedor = frm.GetProveedor();
                 if (proveedor is null) return;
-                _servicio.AsignarProveedorAPlanta(planta, proveedor);
-                MessageBox.Show("Proveedor asignado a la planta!!!",
-                    "Mensaje",
-                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+                if (!_servicio.ExisteRelacion(planta, proveedor))
+                {
+                    _servicio.AsignarProveedorAPlanta(planta, proveedor);
+                    MessageBox.Show("Proveedor asignado a la planta!!!",
+                        "Mensaje",
+                        MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+
+                }
+                else {
+                    MessageBox.Show("Asignación Existente!!!",
+                    "Error",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error); 
+
+                }
 
             }
             catch (Exception ex)
             {
-
-                MessageBox.Show(ex.Message);
+                MessageBox.Show(ex.Message,
+                            "Error",
+                            MessageBoxButtons.OK, MessageBoxIcon.Error);
+                
             }
 
         }

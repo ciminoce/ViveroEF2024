@@ -285,5 +285,16 @@ namespace ViveroEF2024.Datos.Repositories
                 .ToList();
 
         }
+
+        public bool ExisteRelacion(Planta planta, Proveedor proveedor)
+        {
+            if(planta is null || proveedor is null) return false;
+            var existeRelacion=_context.Plantas
+                .Include(pp=>pp.ProveedoresPlantas)
+                .ThenInclude(pp=>pp.Proveedor)
+                .Any(p=>p.PlantaId==planta.PlantaId && 
+                    p.ProveedoresPlantas.Any(pp=>pp.ProveedorId==proveedor.ProveedorId));
+            return existeRelacion;
+        }
     }
 }

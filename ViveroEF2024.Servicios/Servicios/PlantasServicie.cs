@@ -227,5 +227,10 @@ namespace ViveroEF2024.Servicios.Servicios
         {
             return _repository.GetProveedoresPorPlanta(plantaId);
         }
+
+        public bool ExisteRelacion(Planta planta, Proveedor proveedor)
+        {
+            return _repository.ExisteRelacion(planta, proveedor);
+        }
     }
 }
