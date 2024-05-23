@@ -22,12 +22,12 @@ namespace ViveroEF2024.Windows.Helpers
         {
             var servicio = serviceProvider.GetService<ITiposDePlantasService>();
 
-            var lista = servicio.GetLista();
+            var lista = servicio?.GetLista();
             var defaultTipoPlanta = new TipoDePlanta
             {
                 Descripcion = "Seleccione"
             };
-            lista.Insert(0, defaultTipoPlanta);
+            lista?.Insert(0, defaultTipoPlanta);
             cbo.DataSource = lista;
             cbo.DisplayMember = "Descripcion";
             cbo.ValueMember = "TipoDePlantaId";
@@ -38,12 +38,12 @@ namespace ViveroEF2024.Windows.Helpers
         {
             var servicio = serviceProvider.GetService<ITiposDeEnvasesService>();
 
-            var lista = servicio.GetLista();
+            var lista = servicio?.GetLista();
             var defaultTipoEnvase = new TipoDeEnvase
             {
                 Descripcion = "Seleccione"
             };
-            lista.Insert(0, defaultTipoEnvase);
+            lista?.Insert(0, defaultTipoEnvase);
             cbo.DataSource = lista;
             cbo.DisplayMember = "Descripcion";
             cbo.ValueMember = "TipoDeEnvaseId";
@@ -55,7 +55,7 @@ namespace ViveroEF2024.Windows.Helpers
             var servicio = serviceProvider.GetService<ITiposDeEnvasesService>();
             // Obtener la lista de tipos de envases del repositorio
 
-            var lista = servicio.GetLista();
+            var lista = servicio?.GetLista();
             var defaultTipoEnvase = new TipoDeEnvase
             {
                 Descripcion = "Seleccione"
@@ -65,15 +65,18 @@ namespace ViveroEF2024.Windows.Helpers
 
             // Limpiar el ToolStripComboBox
             cbo.Items.Clear();
-            lista.Insert(0, defaultTipoEnvase);
+            lista?.Insert(0, defaultTipoEnvase);
             // Agregar los tipos de envases al ToolStripComboBox
-            foreach (TipoDeEnvase tipoDeEnvase in lista)
+            if (lista is not null)
             {
-                cbo.Items.Add(tipoDeEnvase.Descripcion);
-            }
+                foreach (TipoDeEnvase tipoDeEnvase in lista)
+                {
+                    cbo.Items.Add(tipoDeEnvase.Descripcion);
+                }
 
+            }
             // Seleccionar el primer elemento del ToolStripComboBox si hay elementos
-            if (lista.Count > 0)
+            if (lista?.Count > 0)
             {
                 cbo.SelectedIndex = 0;
             }
@@ -83,7 +86,7 @@ namespace ViveroEF2024.Windows.Helpers
             var servicio = serviceProvider.GetService<ITiposDePlantasService>();
             // Obtener la lista de tipos de envases del repositorio
 
-            var lista = servicio.GetLista();
+            var lista = servicio?.GetLista();
             var defaultTipoPlanta = new TipoDePlanta
             {
                 Descripcion = "Seleccione"
@@ -93,18 +96,36 @@ namespace ViveroEF2024.Windows.Helpers
 
             // Limpiar el ToolStripComboBox
             cbo.Items.Clear();
-            lista.Insert(0, defaultTipoPlanta);
+            lista?.Insert(0, defaultTipoPlanta);
             // Agregar los tipos de envases al ToolStripComboBox
-            foreach (TipoDePlanta tipoDePlanta in lista)
+            if (lista is not null)
             {
-                cbo.Items.Add(tipoDePlanta.Descripcion);
-            }
+                foreach (TipoDePlanta tipoDePlanta in lista)
+                {
+                    cbo.Items.Add(tipoDePlanta.Descripcion);
+                }
 
+            }
             // Seleccionar el primer elemento del ToolStripComboBox si hay elementos
-            if (lista.Count > 0)
+            if (lista?.Count > 0)
             {
                 cbo.SelectedIndex = 0;
             }
+        }
+        public static void CargarComboProveedores(IServiceProvider serviceProvider, ref ComboBox cbo)
+        {
+            var servicio = serviceProvider.GetService<IProveedoresService>();
+
+            var lista = servicio?.GetLista();
+            var defaultProveedor = new Proveedor
+            {
+                Nombre = "Seleccione"
+            };
+            lista?.Insert(0, defaultProveedor);
+            cbo.DataSource = lista;
+            cbo.DisplayMember = "Nombre";
+            cbo.ValueMember = "ProveedorId";
+            cbo.SelectedIndex = 0;
         }
 
     }

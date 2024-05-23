@@ -28,11 +28,14 @@
         /// </summary>
         private void InitializeComponent()
         {
+            components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmAgregarProveedor));
             btnCancelar = new Button();
             btnOk = new Button();
             cboProveedores = new ComboBox();
             label1 = new Label();
+            errorProvider1 = new ErrorProvider(components);
+            ((System.ComponentModel.ISupportInitialize)errorProvider1).BeginInit();
             SuspendLayout();
             // 
             // btnCancelar
@@ -45,6 +48,7 @@
             btnCancelar.Text = "Cancelar";
             btnCancelar.TextImageRelation = TextImageRelation.ImageAboveText;
             btnCancelar.UseVisualStyleBackColor = true;
+            btnCancelar.Click += btnCancelar_Click;
             // 
             // btnOk
             // 
@@ -56,6 +60,7 @@
             btnOk.Text = "Ok";
             btnOk.TextImageRelation = TextImageRelation.ImageAboveText;
             btnOk.UseVisualStyleBackColor = true;
+            btnOk.Click += btnOk_Click;
             // 
             // cboProveedores
             // 
@@ -65,6 +70,7 @@
             cboProveedores.Name = "cboProveedores";
             cboProveedores.Size = new Size(383, 23);
             cboProveedores.TabIndex = 14;
+            cboProveedores.SelectedIndexChanged += cboProveedores_SelectedIndexChanged;
             // 
             // label1
             // 
@@ -74,6 +80,10 @@
             label1.Size = new Size(64, 15);
             label1.TabIndex = 13;
             label1.Text = "Proveedor:";
+            // 
+            // errorProvider1
+            // 
+            errorProvider1.ContainerControl = this;
             // 
             // frmAgregarProveedor
             // 
@@ -86,6 +96,7 @@
             Controls.Add(label1);
             Name = "frmAgregarProveedor";
             Text = "frmAgregarProveedor";
+            ((System.ComponentModel.ISupportInitialize)errorProvider1).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -96,5 +107,6 @@
         private Button btnOk;
         private ComboBox cboProveedores;
         private Label label1;
+        private ErrorProvider errorProvider1;
     }
 }
