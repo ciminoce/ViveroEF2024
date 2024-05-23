@@ -275,5 +275,15 @@ namespace ViveroEF2024.Datos.Repositories
             return _context.Plantas.GroupBy(p => p.TipoDePlantaId)
                 .ToList();
         }
+
+        public List<Proveedor>? GetProveedoresPorPlanta(int plantaId)
+        {
+            return _context.ProveedoresPlantas
+                .Include(pp=>pp.Proveedor)
+                .Where(pp=>pp.PlantaId == plantaId)
+                .Select(pp=>pp.Proveedor)
+                .ToList();
+
+        }
     }
 }

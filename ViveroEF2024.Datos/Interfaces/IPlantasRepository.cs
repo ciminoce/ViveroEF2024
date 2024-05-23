@@ -23,5 +23,6 @@ namespace ViveroEF2024.Datos.Interfaces
         void AgregarProveedorPlanta(ProveedorPlanta nuevaRelacion);
         void Editar(Planta planta, int? proveedorId);
         IEnumerable<IGrouping<int, Planta>> GetPlantasAgrupadasPorTipoDePlanta();
+        List<Proveedor>? GetProveedoresPorPlanta(int plantaId);
     }
 }

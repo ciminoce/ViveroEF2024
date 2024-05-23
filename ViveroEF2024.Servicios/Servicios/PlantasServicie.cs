@@ -1,6 +1,5 @@
 ﻿using ViveroEF2024.Datos;
 using ViveroEF2024.Datos.Interfaces;
-using ViveroEF2024.Datos.Repositories;
 using ViveroEF2024.Entidades;
 using ViveroEF2024.Entidades.Dto;
 using ViveroEF2024.Entidades.Enums;
@@ -13,7 +12,7 @@ namespace ViveroEF2024.Servicios.Servicios
         private readonly IPlantasRepository _repository;
         private readonly IProveedoresRepository _proveedorRepository;
         private readonly IUnitOfWork _unitOfWork;
-        public PlantasService(IPlantasRepository repository, 
+        public PlantasService(IPlantasRepository repository,
             IUnitOfWork unitOfWork,
             IProveedoresRepository proveedorRepository)
         {
@@ -32,7 +31,7 @@ namespace ViveroEF2024.Servicios.Servicios
                 // la planta con los proveedores
                 if (planta.ProveedoresPlantas != null)
                 {
-                    foreach (var proveedorPlanta in 
+                    foreach (var proveedorPlanta in
                         planta.ProveedoresPlantas.ToList())
                     {
                         planta.ProveedoresPlantas
@@ -98,11 +97,11 @@ namespace ViveroEF2024.Servicios.Servicios
             {
                 _unitOfWork.Rollback();
                 throw;
-            }  
+            }
         }
 
-        public List<PlantaListDto> GetListaPaginadaOrdenadaFiltrada(int page, int pageSize, 
-            Orden? orden = null, TipoDePlanta? tipoPlantaFiltro = null, TipoDeEnvase? tipoDeEnvaseFiltro=null )
+        public List<PlantaListDto> GetListaPaginadaOrdenadaFiltrada(int page, int pageSize,
+            Orden? orden = null, TipoDePlanta? tipoPlantaFiltro = null, TipoDeEnvase? tipoDeEnvaseFiltro = null)
         {
             return _repository.GetListaPaginadaOrdenadaFiltrada(page, pageSize,
                 orden, tipoPlantaFiltro, tipoDeEnvaseFiltro);
@@ -123,7 +122,7 @@ namespace ViveroEF2024.Servicios.Servicios
                 _repository.Agregar(planta);
 
                 // Agrega el proveedor
-                if (proveedor.ProveedorId==0)
+                if (proveedor.ProveedorId == 0)
                 {
                     _proveedorRepository.Agregar(proveedor);
 
@@ -222,6 +221,11 @@ namespace ViveroEF2024.Servicios.Servicios
         IEnumerable<IGrouping<int, Planta>> IPlantasService.GetPlantasAgrupadasPorTipoDePlanta()
         {
             return _repository.GetPlantasAgrupadasPorTipoDePlanta();
+        }
+
+        public List<Proveedor>? GetProveedoresPorPlanta(int plantaId)
+        {
+            return _repository.GetProveedoresPorPlanta(plantaId);
         }
     }
 }

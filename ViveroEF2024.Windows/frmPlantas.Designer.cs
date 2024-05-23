@@ -28,9 +28,14 @@
         /// </summary>
         private void InitializeComponent()
         {
-            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
             panelGrilla = new Panel();
             dgvDatos = new DataGridView();
+            colPlanta = new DataGridViewTextBoxColumn();
+            colTipoPlanta = new DataGridViewTextBoxColumn();
+            colTipoEnvase = new DataGridViewTextBoxColumn();
+            colPrecio = new DataGridViewTextBoxColumn();
+            colCantidad = new DataGridViewTextBoxColumn();
             panelToolBar = new Panel();
             toolStrip1 = new ToolStrip();
             tsbNuevo = new ToolStripButton();
@@ -44,7 +49,7 @@
             tcboTiposDePlantas = new ToolStripComboBox();
             tsbActualizar = new ToolStripButton();
             toolStripSeparator2 = new ToolStripSeparator();
-            toolStripButton1 = new ToolStripButton();
+            tsbProveedores = new ToolStripButton();
             toolStripButton2 = new ToolStripButton();
             toolStripSeparator4 = new ToolStripSeparator();
             tsbOrden = new ToolStripDropDownButton();
@@ -63,11 +68,6 @@
             btnSiguiente = new Button();
             btnAnterior = new Button();
             btnPrimero = new Button();
-            colPlanta = new DataGridViewTextBoxColumn();
-            colTipoPlanta = new DataGridViewTextBoxColumn();
-            colTipoEnvase = new DataGridViewTextBoxColumn();
-            colPrecio = new DataGridViewTextBoxColumn();
-            colCantidad = new DataGridViewTextBoxColumn();
             panelGrilla.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvDatos).BeginInit();
             panelToolBar.SuspendLayout();
@@ -88,8 +88,8 @@
             // 
             dgvDatos.AllowUserToAddRows = false;
             dgvDatos.AllowUserToDeleteRows = false;
-            dataGridViewCellStyle1.BackColor = Color.FromArgb(224, 224, 224);
-            dgvDatos.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle2.BackColor = Color.FromArgb(224, 224, 224);
+            dgvDatos.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle2;
             dgvDatos.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dgvDatos.Columns.AddRange(new DataGridViewColumn[] { colPlanta, colTipoPlanta, colTipoEnvase, colPrecio, colCantidad });
             dgvDatos.Dock = DockStyle.Fill;
@@ -102,6 +102,43 @@
             dgvDatos.Size = new Size(800, 307);
             dgvDatos.TabIndex = 0;
             // 
+            // colPlanta
+            // 
+            colPlanta.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            colPlanta.HeaderText = "Planta";
+            colPlanta.Name = "colPlanta";
+            colPlanta.ReadOnly = true;
+            // 
+            // colTipoPlanta
+            // 
+            colTipoPlanta.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            colTipoPlanta.HeaderText = "Tipo de Planta";
+            colTipoPlanta.Name = "colTipoPlanta";
+            colTipoPlanta.ReadOnly = true;
+            // 
+            // colTipoEnvase
+            // 
+            colTipoEnvase.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            colTipoEnvase.HeaderText = "Tipo de Envase";
+            colTipoEnvase.Name = "colTipoEnvase";
+            colTipoEnvase.ReadOnly = true;
+            // 
+            // colPrecio
+            // 
+            colPrecio.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            colPrecio.HeaderText = "P. Vta";
+            colPrecio.Name = "colPrecio";
+            colPrecio.ReadOnly = true;
+            colPrecio.Width = 62;
+            // 
+            // colCantidad
+            // 
+            colCantidad.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            colCantidad.HeaderText = "Cant.Prov";
+            colCantidad.Name = "colCantidad";
+            colCantidad.ReadOnly = true;
+            colCantidad.Width = 84;
+            // 
             // panelToolBar
             // 
             panelToolBar.Controls.Add(toolStrip1);
@@ -113,7 +150,7 @@
             // 
             // toolStrip1
             // 
-            toolStrip1.Items.AddRange(new ToolStripItem[] { tsbNuevo, tsbBorrar, tsbEditar, toolStripSeparator1, tsbFiltrar, tsbActualizar, toolStripSeparator2, toolStripButton1, toolStripButton2, toolStripSeparator4, tsbOrden, toolStripSeparator3, tsbCerrar });
+            toolStrip1.Items.AddRange(new ToolStripItem[] { tsbNuevo, tsbBorrar, tsbEditar, toolStripSeparator1, tsbFiltrar, tsbActualizar, toolStripSeparator2, tsbProveedores, toolStripButton2, toolStripSeparator4, tsbOrden, toolStripSeparator3, tsbCerrar });
             toolStrip1.Location = new Point(0, 0);
             toolStrip1.Name = "toolStrip1";
             toolStrip1.Size = new Size(800, 62);
@@ -213,15 +250,16 @@
             toolStripSeparator2.Name = "toolStripSeparator2";
             toolStripSeparator2.Size = new Size(6, 62);
             // 
-            // toolStripButton1
+            // tsbProveedores
             // 
-            toolStripButton1.Image = Properties.Resources.supplier_40px;
-            toolStripButton1.ImageScaling = ToolStripItemImageScaling.None;
-            toolStripButton1.ImageTransparentColor = Color.Magenta;
-            toolStripButton1.Name = "toolStripButton1";
-            toolStripButton1.Size = new Size(76, 59);
-            toolStripButton1.Text = "Proveedores";
-            toolStripButton1.TextImageRelation = TextImageRelation.ImageAboveText;
+            tsbProveedores.Image = Properties.Resources.supplier_40px;
+            tsbProveedores.ImageScaling = ToolStripItemImageScaling.None;
+            tsbProveedores.ImageTransparentColor = Color.Magenta;
+            tsbProveedores.Name = "tsbProveedores";
+            tsbProveedores.Size = new Size(76, 59);
+            tsbProveedores.Text = "Proveedores";
+            tsbProveedores.TextImageRelation = TextImageRelation.ImageAboveText;
+            tsbProveedores.Click += tsbProveedores_Click;
             // 
             // toolStripButton2
             // 
@@ -389,43 +427,6 @@
             btnPrimero.UseVisualStyleBackColor = true;
             btnPrimero.Click += btnPrimero_Click;
             // 
-            // colPlanta
-            // 
-            colPlanta.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-            colPlanta.HeaderText = "Planta";
-            colPlanta.Name = "colPlanta";
-            colPlanta.ReadOnly = true;
-            // 
-            // colTipoPlanta
-            // 
-            colTipoPlanta.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-            colTipoPlanta.HeaderText = "Tipo de Planta";
-            colTipoPlanta.Name = "colTipoPlanta";
-            colTipoPlanta.ReadOnly = true;
-            // 
-            // colTipoEnvase
-            // 
-            colTipoEnvase.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-            colTipoEnvase.HeaderText = "Tipo de Envase";
-            colTipoEnvase.Name = "colTipoEnvase";
-            colTipoEnvase.ReadOnly = true;
-            // 
-            // colPrecio
-            // 
-            colPrecio.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            colPrecio.HeaderText = "P. Vta";
-            colPrecio.Name = "colPrecio";
-            colPrecio.ReadOnly = true;
-            colPrecio.Width = 62;
-            // 
-            // colCantidad
-            // 
-            colCantidad.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            colCantidad.HeaderText = "Cant.Prov";
-            colCantidad.Name = "colCantidad";
-            colCantidad.ReadOnly = true;
-            colCantidad.Width = 84;
-            // 
             // frmPlantas
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -481,7 +482,7 @@
         private ToolStripMenuItem porTipoDePlantaToolStripMenuItem;
         private ToolStripComboBox tcboTiposDeEnvases;
         private ToolStripComboBox tcboTiposDePlantas;
-        private ToolStripButton toolStripButton1;
+        private ToolStripButton tsbProveedores;
         private ToolStripButton toolStripButton2;
         private ToolStripSeparator toolStripSeparator4;
         private DataGridViewTextBoxColumn colPlanta;

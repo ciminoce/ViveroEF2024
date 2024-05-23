@@ -183,7 +183,7 @@ namespace ViveroEF2024.Windows
 
                 MessageBox.Show(ex.Message, "Error",
                         MessageBoxButtons.OK, MessageBoxIcon.Error);
-                
+
             }
         }
         private void ActualizarListaDespuesAgregar(Planta plantaAgregada)
@@ -208,7 +208,7 @@ namespace ViveroEF2024.Windows
                 cboPaginas.SelectedIndex = pageNum;
                 //modifique los parámetros OJO!!!
                 lista = _servicio
-                    .GetListaPaginadaOrdenadaFiltrada(pageNum, pageSize,orden,
+                    .GetListaPaginadaOrdenadaFiltrada(pageNum, pageSize, orden,
                     tipoDePlantaFiltro, tipoDeEnvaseFiltro);
                 MostrarDatosEnGrilla();
             }
@@ -280,7 +280,7 @@ namespace ViveroEF2024.Windows
                         .GetTipoDePlantaPorNombre(tcboTiposDePlantas.Text);
 
                     // Definir el filtro
-                    Func<Planta, bool> filtro = 
+                    Func<Planta, bool> filtro =
                         p => p.TipoDePlanta == tipoDePlantaFiltro;
 
                     // Obtener la cantidad de registros después de aplicar el filtro
@@ -299,8 +299,8 @@ namespace ViveroEF2024.Windows
 
                     // Obtener la lista paginada ordenada y filtrada
                     lista = _servicio
-                        .GetListaPaginadaOrdenadaFiltrada(pageNum, 
-                        pageSize, orden, tipoDePlantaFiltro, 
+                        .GetListaPaginadaOrdenadaFiltrada(pageNum,
+                        pageSize, orden, tipoDePlantaFiltro,
                         tipoDeEnvaseFiltro);
                     MostrarDatosEnGrilla();
 
@@ -336,14 +336,14 @@ namespace ViveroEF2024.Windows
 
         private void tsbEditar_Click(object sender, EventArgs e)
         {
-            if (dgvDatos.SelectedRows.Count==0) { return; }
+            if (dgvDatos.SelectedRows.Count == 0) { return; }
             var r = dgvDatos.SelectedRows[0];
-            PlantaListDto plantaList =(PlantaListDto)r.Tag;
+            PlantaListDto plantaList = (PlantaListDto)r.Tag;
             var planta = _servicio.GetPlantaPorId(plantaList.PlantaId);
-            frmPlantasAE frm = new frmPlantasAE(_serviceProvider) 
-                    { Text = "Editar Planta" };
+            frmPlantasAE frm = new frmPlantasAE(_serviceProvider)
+            { Text = "Editar Planta" };
             frm.SetPlanta(planta);
-            DialogResult dr=frm.ShowDialog(this);
+            DialogResult dr = frm.ShowDialog(this);
             try
             {
                 planta = frm.GetPlanta();
@@ -365,8 +365,32 @@ namespace ViveroEF2024.Windows
 
                 MessageBox.Show(ex.Message, "Error",
                         MessageBoxButtons.OK, MessageBoxIcon.Error);
-                
+
             }
+        }
+
+        private void tsbProveedores_Click(object sender, EventArgs e)
+        {
+            if (dgvDatos.SelectedRows.Count==0)
+            {
+                return;
+            }
+            var r=dgvDatos.SelectedRows[0];
+            if (r.Tag is null) return;
+            PlantaListDto plantaDto = (PlantaListDto)r.Tag;
+            List<Proveedor>? proveedores = _servicio
+                .GetProveedoresPorPlanta(plantaDto.PlantaId);
+            if (proveedores is null || proveedores.Count==0)
+            {
+                MessageBox.Show("Planta sin proveedores asignados",
+                    "Advertencia",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+            frmDetalleProveedor frm = new frmDetalleProveedor()
+                { Text = $"Proveedores de la planta {plantaDto.Nombre}" };
+            frm.SetDatos(proveedores);
+            frm.ShowDialog(this);
         }
     }
 }

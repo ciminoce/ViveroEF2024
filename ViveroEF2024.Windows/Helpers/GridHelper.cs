@@ -46,7 +46,9 @@ namespace ViveroEF2024.Windows.Helpers
                     r.Cells[2].Value = planta.TipoDeEnvase?.Descripcion;
                     r.Cells[3].Value = planta.PrecioVenta.ToString("C");
                     break;
-
+                case Proveedor proveedor:
+                    r.Cells[0].Value = proveedor.Nombre;
+                    break;
                 default:
                     break;
 
@@ -59,5 +61,15 @@ namespace ViveroEF2024.Windows.Helpers
             dgv.Rows.Add(r);
         }
 
+        public static void MostrarDatosEnGrilla<T>(List<T> lista, DataGridView dgvDatos) where T : class
+        {
+            LimpiarGrilla(dgvDatos);
+            foreach (T t in lista)
+            {
+                var r = ConstruirFila(dgvDatos);
+                SetearFila(r, t);
+                AgregarFila(r, dgvDatos);
+            }
+        }
     }
 }
