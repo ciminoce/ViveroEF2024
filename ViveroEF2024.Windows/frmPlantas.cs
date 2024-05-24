@@ -415,6 +415,11 @@ namespace ViveroEF2024.Windows
                 if (!_servicio.ExisteRelacion(planta, proveedor))
                 {
                     _servicio.AsignarProveedorAPlanta(planta, proveedor);
+                    if (plantaDto is not null)
+                    {
+                        plantaDto.CantidadProveedores++;
+                        GridHelper.SetearFila(r, plantaDto);
+                    }
                     MessageBox.Show("Proveedor asignado a la planta!!!",
                         "Mensaje",
                         MessageBoxButtons.OK, MessageBoxIcon.Information);
