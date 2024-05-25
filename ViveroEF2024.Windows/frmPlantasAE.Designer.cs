@@ -48,9 +48,7 @@
             lblNuevoTipoDePlanta = new Label();
             lblNuevoTipoDeEnvase = new Label();
             label6 = new Label();
-            cboProveedores = new ComboBox();
-            btnAgregarProveedor = new Button();
-            label7 = new Label();
+            clstProveedores = new CheckedListBox();
             ((System.ComponentModel.ISupportInitialize)errorProvider1).BeginInit();
             SuspendLayout();
             // 
@@ -61,7 +59,7 @@
             // btnCancelar
             // 
             btnCancelar.Image = Properties.Resources.Cancelar;
-            btnCancelar.Location = new Point(418, 328);
+            btnCancelar.Location = new Point(412, 423);
             btnCancelar.Name = "btnCancelar";
             btnCancelar.Size = new Size(105, 54);
             btnCancelar.TabIndex = 10;
@@ -73,7 +71,7 @@
             // btnOk
             // 
             btnOk.Image = (Image)resources.GetObject("btnOk.Image");
-            btnOk.Location = new Point(91, 328);
+            btnOk.Location = new Point(85, 423);
             btnOk.Name = "btnOk";
             btnOk.Size = new Size(289, 54);
             btnOk.TabIndex = 9;
@@ -224,53 +222,26 @@
             label6.TabIndex = 33;
             label6.Text = "Proveedor:";
             // 
-            // cboProveedores
+            // clstProveedores
             // 
-            cboProveedores.DropDownStyle = ComboBoxStyle.DropDownList;
-            cboProveedores.FormattingEnabled = true;
-            cboProveedores.Location = new Point(118, 266);
-            cboProveedores.Name = "cboProveedores";
-            cboProveedores.Size = new Size(272, 23);
-            cboProveedores.TabIndex = 7;
-            cboProveedores.SelectedIndexChanged += cboTiposEnvases_SelectedIndexChanged;
-            // 
-            // btnAgregarProveedor
-            // 
-            btnAgregarProveedor.Image = Properties.Resources.plus_24px;
-            btnAgregarProveedor.Location = new Point(412, 260);
-            btnAgregarProveedor.Name = "btnAgregarProveedor";
-            btnAgregarProveedor.Size = new Size(57, 32);
-            btnAgregarProveedor.TabIndex = 8;
-            btnAgregarProveedor.TextImageRelation = TextImageRelation.ImageAboveText;
-            btnAgregarProveedor.UseVisualStyleBackColor = true;
-            btnAgregarProveedor.Click += btnAgregarEnvase_Click;
-            // 
-            // label7
-            // 
-            label7.AutoSize = true;
-            label7.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            label7.ForeColor = Color.Red;
-            label7.Location = new Point(118, 301);
-            label7.Name = "label7";
-            label7.Size = new Size(106, 15);
-            label7.TabIndex = 42;
-            label7.Text = "Nuevo Proveedor";
-            label7.Visible = false;
+            clstProveedores.FormattingEnabled = true;
+            clstProveedores.Location = new Point(131, 276);
+            clstProveedores.Name = "clstProveedores";
+            clstProveedores.Size = new Size(338, 130);
+            clstProveedores.TabIndex = 43;
             // 
             // frmPlantasAE
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(600, 394);
-            Controls.Add(label7);
+            ClientSize = new Size(600, 516);
+            Controls.Add(clstProveedores);
             Controls.Add(lblNuevoTipoDeEnvase);
             Controls.Add(lblNuevoTipoDePlanta);
-            Controls.Add(btnAgregarProveedor);
             Controls.Add(btnAgregarEnvase);
             Controls.Add(btnAgregarTipoPlanta);
             Controls.Add(btnCancelar);
             Controls.Add(btnOk);
-            Controls.Add(cboProveedores);
             Controls.Add(label6);
             Controls.Add(cboTiposEnvases);
             Controls.Add(label4);
@@ -307,9 +278,7 @@
         private Button btnAgregarEnvase;
         private Label lblNuevoTipoDePlanta;
         private Label lblNuevoTipoDeEnvase;
-        private Label label7;
-        private Button btnAgregarProveedor;
-        private ComboBox cboProveedores;
         private Label label6;
+        private CheckedListBox clstProveedores;
     }
 }

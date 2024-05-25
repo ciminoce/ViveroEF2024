@@ -165,6 +165,7 @@ namespace ViveroEF2024.Windows
             try
             {
                 var planta = frm.GetPlanta();
+                if (planta is null) return;
                 if (!_servicio.Existe(planta))
                 {
                     _servicio.Guardar(planta);
@@ -190,7 +191,8 @@ namespace ViveroEF2024.Windows
         {
             // Obtener la página actual y actualizar la lista
             int paginaActual = pageNum;
-            lista = _servicio.GetListaPaginadaOrdenadaFiltrada(paginaActual, pageSize);
+            lista = _servicio
+                .GetListaPaginadaOrdenadaFiltrada(paginaActual, pageSize);
 
             // Mostrar la lista actualizada en la grilla
             MostrarDatosEnGrilla();
@@ -283,14 +285,16 @@ namespace ViveroEF2024.Windows
                     Func<Planta, bool> filtro =
                         p => p.TipoDePlanta == tipoDePlantaFiltro;
 
-                    // Obtener la cantidad de registros después de aplicar el filtro
+                    // Obtener la cantidad de registros después
+                    // de aplicar el filtro
                     recordCount = _servicio.GetCantidad(filtro);
 
                     // Recalcular el número de páginas
                     pageCount = FormHelper
                         .CalcularPaginas(recordCount, pageSize);
 
-                    // Actualizar el texto del cuadro de texto de cantidad de registros
+                    // Actualizar el texto del cuadro de texto
+                    // de cantidad de registros
                     txtCantidadRegistros.Text = pageCount.ToString();
 
                     // Recargar el combo de páginas
@@ -315,7 +319,9 @@ namespace ViveroEF2024.Windows
             }
             else
             {
-                MessageBox.Show("Debe actualizar la grilla!!!", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Debe actualizar la grilla!!!", 
+                    "Advertencia", MessageBoxButtons.OK, 
+                    MessageBoxIcon.Warning);
             }
         }
 
@@ -338,6 +344,7 @@ namespace ViveroEF2024.Windows
         {
             if (dgvDatos.SelectedRows.Count == 0) { return; }
             var r = dgvDatos.SelectedRows[0];
+            if (r.Tag is null) return;
             PlantaListDto plantaList = (PlantaListDto)r.Tag;
             var planta = _servicio.GetPlantaPorId(plantaList.PlantaId);
             frmPlantasAE frm = new frmPlantasAE(_serviceProvider)
@@ -347,6 +354,7 @@ namespace ViveroEF2024.Windows
             try
             {
                 planta = frm.GetPlanta();
+                if (planta is null) return;
                 if (!_servicio.Existe(planta))
                 {
                     _servicio.Guardar(planta);

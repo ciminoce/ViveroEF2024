@@ -11,6 +11,7 @@ namespace ViveroEF2024.Windows
         private Planta? planta;
         private TipoDePlanta? tipoDePlanta;
         private TipoDeEnvase? tipoDeEnvase;
+        private Proveedor? proveedor;
         public frmPlantasAE(IServiceProvider serviceProvider)
         {
             InitializeComponent();
@@ -22,6 +23,7 @@ namespace ViveroEF2024.Windows
             base.OnLoad(e);
             CombosHelper.CargarComboTiposPlantas(_serviceProvider, ref cboTiposPlantas);
             CombosHelper.CargarComboTiposEnvases(_serviceProvider, ref cboTiposEnvases);
+            CombosHelper.CargarComboProveedores(_serviceProvider, ref cboProveedores);
             if (planta!=null)
             {
                 txtPlanta.Text = planta.Descripcion;
@@ -34,7 +36,7 @@ namespace ViveroEF2024.Windows
             }
         }
 
-        public Planta GetPlanta()
+        public Planta? GetPlanta()
         {
             return planta;
         }
@@ -57,8 +59,8 @@ namespace ViveroEF2024.Windows
                 planta.TipoDeEnvase = tipoDeEnvase;
                 planta.PrecioCosto = decimal.Parse(txtPrecioCosto.Text);
                 planta.PrecioVenta = decimal.Parse(txtPrecioVta.Text);
-                planta.TipoDeEnvaseId = tipoDeEnvase.TipoDeEnvaseId;
-                planta.TipoDePlantaId = tipoDePlanta.TipoDePlantaId;
+                planta.TipoDeEnvaseId = tipoDeEnvase?.TipoDeEnvaseId??0;
+                planta.TipoDePlantaId = tipoDePlanta?.TipoDePlantaId??0;
 
                 DialogResult = DialogResult.OK;
             }
@@ -130,7 +132,7 @@ namespace ViveroEF2024.Windows
         {
             if (cboTiposPlantas.SelectedIndex > 0)
             {
-                tipoDePlanta = (TipoDePlanta)cboTiposPlantas.SelectedItem;
+                tipoDePlanta = (TipoDePlanta?)cboTiposPlantas.SelectedItem;
             }
             else
             {
@@ -142,7 +144,7 @@ namespace ViveroEF2024.Windows
         {
             if (cboTiposEnvases.SelectedIndex>0)
             {
-                tipoDeEnvase=(TipoDeEnvase)cboTiposEnvases.SelectedItem;
+                tipoDeEnvase=(TipoDeEnvase?)cboTiposEnvases.SelectedItem;
             }else { tipoDeEnvase = null; }
         }
 
