@@ -1,8 +1,7 @@
 ﻿using ViveroEF2024.Entidades;
 
-namespace ViveroEF2024.Datos;
 
-public partial class TipoDePlanta
+public class TipoDePlanta
 {
     public int TipoDePlantaId { get; set; }
 
