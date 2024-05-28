@@ -1,4 +1,6 @@
-﻿namespace ViveroEF2024.Datos.Interfaces
+﻿using ViveroEF2024.Entidades;
+
+namespace ViveroEF2024.Datos.Interfaces
 {
     public interface ITiposDePlantaRepository
     {

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using ViveroEF2024.Entidades;
 
 namespace ViveroEF2024.Datos;
 

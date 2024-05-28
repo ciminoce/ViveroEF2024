@@ -1,6 +1,7 @@
 ﻿using ViveroEF2024.Datos;
 using ViveroEF2024.Datos.Interfaces;
 using ViveroEF2024.Datos.Repositories;
+using ViveroEF2024.Entidades;
 using ViveroEF2024.Servicios.Intefaces;
 
 namespace ViveroEF2024.Servicios.Servicios

@@ -1,4 +1,5 @@
 ﻿using ViveroEF2024.Datos;
+using ViveroEF2024.Entidades;
 
 namespace ViveroEF2024.Servicios.Intefaces
 {

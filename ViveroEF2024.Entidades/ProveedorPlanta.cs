@@ -1,6 +1,4 @@
-﻿using ViveroEF2024.Datos;
-
-namespace ViveroEF2024.Entidades
+﻿namespace ViveroEF2024.Entidades
 {
     public class ProveedorPlanta
     {

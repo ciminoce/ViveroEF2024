@@ -1,6 +1,6 @@
-﻿using ViveroEF2024.Entidades;
+﻿using ViveroEF2024.Datos;
 
-namespace ViveroEF2024.Datos;
+namespace ViveroEF2024.Entidades;
 
 public partial class Planta
 {
@@ -13,7 +13,7 @@ public partial class Planta
     public decimal PrecioCosto { get; set; }
     public decimal PrecioVenta { get; set; }
     public int TipoDeEnvaseId { get; set; }
-    public TipoDePlanta? TipoDePlanta { get; set; } 
+    public TipoDePlanta? TipoDePlanta { get; set; }
     public TipoDeEnvase? TipoDeEnvase { get; set; }
     public ICollection<ProveedorPlanta> ProveedoresPlantas { get; set; } = new List<ProveedorPlanta>();
 }

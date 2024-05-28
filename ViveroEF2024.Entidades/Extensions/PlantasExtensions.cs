@@ -1,5 +1,4 @@
-﻿using ViveroEF2024.Datos;
-using ViveroEF2024.Entidades.Dto;
+﻿using ViveroEF2024.Entidades.Dto;
 
 namespace ViveroEF2024.Entidades.Extensions
 {

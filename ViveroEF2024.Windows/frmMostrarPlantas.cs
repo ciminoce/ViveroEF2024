@@ -1,4 +1,4 @@
-﻿using ViveroEF2024.Datos;
+﻿using ViveroEF2024.Entidades;
 using ViveroEF2024.Windows.Helpers;
 
 namespace ViveroEF2024.Windows
