@@ -403,6 +403,16 @@ namespace ViveroEF2024.Windows.Properties {
         /// <summary>
         ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap remove_user_male_40px {
+            get {
+                object obj = ResourceManager.GetObject("remove_user_male_40px", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap shutdown_48px {
             get {
                 object obj = ResourceManager.GetObject("shutdown_48px", resourceCulture);

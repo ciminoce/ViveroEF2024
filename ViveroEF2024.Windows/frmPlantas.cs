@@ -164,13 +164,16 @@ namespace ViveroEF2024.Windows
             if (df == DialogResult.Cancel) { return; }
             try
             {
-                var planta = frm.GetPlanta();
-                if (planta is null) return;
-                if (!_servicio.Existe(planta))
+                (Planta? planta, List<Proveedor>? proveedores) p = frm
+                    .GetPlantaProveedores();
+                if (p.planta is null) return;
+                if (!_servicio.Existe(p.planta))
                 {
-                    _servicio.Guardar(planta);
+                    _servicio.Guardar(p.planta,p.proveedores);
                     // Actualizar la lista después de agregar la planta
-                    ActualizarListaDespuesAgregar(planta);
+                    ActualizarListaDespuesAgregar(p.planta);
+                    MessageBox.Show("Planta agregada!!!", "Error",
+                        MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
                 else
                 {
@@ -346,18 +349,22 @@ namespace ViveroEF2024.Windows
             var r = dgvDatos.SelectedRows[0];
             if (r.Tag is null) return;
             PlantaListDto plantaList = (PlantaListDto)r.Tag;
-            var planta = _servicio.GetPlantaPorId(plantaList.PlantaId);
+            Planta? planta = _servicio.GetPlantaPorId(plantaList.PlantaId);
+            if (planta == null) return;
+            List<Proveedor>? proveedores = _servicio
+                .GetProveedoresPorPlanta(planta.PlantaId);
+            (Planta? planta, List<Proveedor>? proveedores) p=(planta, proveedores);
             frmPlantasAE frm = new frmPlantasAE(_serviceProvider)
-            { Text = "Editar Planta" };
-            frm.SetPlanta(planta);
+                { Text = "Editar Planta" };
+            frm.SetPlantaProveedores(p);
             DialogResult dr = frm.ShowDialog(this);
             try
             {
-                planta = frm.GetPlanta();
-                if (planta is null) return;
-                if (!_servicio.Existe(planta))
+                p= frm.GetPlantaProveedores();
+                if (p.planta is null) return;
+                if (!_servicio.Existe(p.planta))
                 {
-                    _servicio.Guardar(planta);
+                    _servicio.Guardar(p.planta,p.proveedores);
                     ActualizarListaDespuesAgregar(planta);
 
                 }

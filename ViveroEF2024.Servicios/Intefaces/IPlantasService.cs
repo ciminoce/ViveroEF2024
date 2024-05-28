@@ -8,8 +8,8 @@ namespace ViveroEF2024.Servicios.Intefaces
     public interface IPlantasService
     {
         int GetCantidad(Func<Planta, bool>? filtro = null);
-        void Guardar(Planta planta);
-        void Borrar(Planta planta);
+        void Guardar(Planta planta, List<Proveedor>? proveedores);
+        void Borrar(int plantaId);
         List<PlantaListDto> GetListaPaginadaOrdenadaFiltrada(int page,
             int pageSize, Orden? orden = null, TipoDePlanta? tipoPlantaFiltro = null,
             TipoDeEnvase? tipoEnvaseFiltro=null);

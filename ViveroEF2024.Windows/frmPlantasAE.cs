@@ -8,10 +8,11 @@ namespace ViveroEF2024.Windows
     public partial class frmPlantasAE : Form
     {
         private readonly IServiceProvider _serviceProvider;
-        private Planta? planta;
         private TipoDePlanta? tipoDePlanta;
         private TipoDeEnvase? tipoDeEnvase;
-        private Proveedor? proveedor;
+
+        
+        private (Planta? planta, List<Proveedor>? proveedores) p;
         public frmPlantasAE(IServiceProvider serviceProvider)
         {
             InitializeComponent();
@@ -23,22 +24,47 @@ namespace ViveroEF2024.Windows
             base.OnLoad(e);
             CombosHelper.CargarComboTiposPlantas(_serviceProvider, ref cboTiposPlantas);
             CombosHelper.CargarComboTiposEnvases(_serviceProvider, ref cboTiposEnvases);
-            CombosHelper.CargarComboProveedores(_serviceProvider, ref cboProveedores);
-            if (planta!=null)
+            ListBoxHelper.CargarDatosListBoxProveedores(_serviceProvider, ref clstProveedores);
+            if (p.planta != null)
             {
-                txtPlanta.Text = planta.Descripcion;
-                txtPrecioCosto.Text = planta.PrecioCosto.ToString();
-                txtPrecioVta.Text = planta.PrecioVenta.ToString();
-                cboTiposEnvases.SelectedValue = planta.TipoDeEnvaseId;
-                cboTiposPlantas.SelectedValue = planta.TipoDePlantaId;
-                tipoDePlanta = planta.TipoDePlanta;
-                tipoDeEnvase = planta.TipoDeEnvase;
+                txtPlanta.Text = p.planta.Descripcion;
+                txtPrecioCosto.Text = p.planta.PrecioCosto.ToString();
+                txtPrecioVta.Text = p.planta.PrecioVenta.ToString();
+                cboTiposEnvases.SelectedValue = p.planta.TipoDeEnvaseId;
+                cboTiposPlantas.SelectedValue = p.planta.TipoDePlantaId;
+                tipoDePlanta = p.planta.TipoDePlanta;
+                tipoDeEnvase = p.planta.TipoDeEnvase;
+            }
+            if(p.proveedores != null && p.proveedores.Any())
+            {
+                // Recorre todos los ítems del CheckedListBox
+                for (int i = 0; i < clstProveedores.Items.Count; i++)
+                {
+                    // Obtén el proveedor actual del CheckedListBox
+                    var itemProveedor = clstProveedores.Items[i] as Proveedor;
+
+                    if (itemProveedor != null)
+                    {
+                        // Verifica si el proveedor actual está en la lista de proveedores
+                        if (p.proveedores
+                            .Any(p => p.ProveedorId == itemProveedor.ProveedorId))
+                        {
+                            // Selecciona el ítem si el proveedor está en la lista
+                            clstProveedores.SetItemChecked(i, true);
+                        }
+                        else
+                        {
+                            // Desmarca el ítem si el proveedor no está en la lista
+                            clstProveedores.SetItemChecked(i, false);
+                        }
+                    }
+                }
             }
         }
 
-        public Planta? GetPlanta()
+        public (Planta?, List<Proveedor>?) GetPlantaProveedores()
         {
-            return planta;
+            return p;
         }
 
         private void btnCancelar_Click(object sender, EventArgs e)
@@ -50,18 +76,31 @@ namespace ViveroEF2024.Windows
         {
             if (ValidarDatos())
             {
-                if (planta == null)
+                if (p.planta == null)
                 {
-                    planta = new Planta();
+                    p.planta = new Planta();
                 }
-                planta.Descripcion = txtPlanta.Text;
-                planta.TipoDePlanta = tipoDePlanta;
-                planta.TipoDeEnvase = tipoDeEnvase;
-                planta.PrecioCosto = decimal.Parse(txtPrecioCosto.Text);
-                planta.PrecioVenta = decimal.Parse(txtPrecioVta.Text);
-                planta.TipoDeEnvaseId = tipoDeEnvase?.TipoDeEnvaseId??0;
-                planta.TipoDePlantaId = tipoDePlanta?.TipoDePlantaId??0;
+                p.planta.Descripcion = txtPlanta.Text;
+                p.planta.TipoDePlanta = tipoDePlanta;
+                p.planta.TipoDeEnvase = tipoDeEnvase;
+                p.planta.PrecioCosto = decimal.Parse(txtPrecioCosto.Text);
+                p.planta.PrecioVenta = decimal.Parse(txtPrecioVta.Text);
+                p.planta.TipoDeEnvaseId = tipoDeEnvase?.TipoDeEnvaseId ?? 0;
+                p.planta.TipoDePlantaId = tipoDePlanta?.TipoDePlantaId ?? 0;
 
+                //Se checka que la lista tenga algún item seleccionado
+                if (clstProveedores.CheckedItems.Count > 0)
+                {
+                    p.proveedores = new List<Proveedor>();
+                    //Se itera sobre los proveedores seleccionados
+                    foreach (var item in clstProveedores.CheckedItems)
+                    {
+                        //Se almacenan los proveedores seleccionados
+
+                        p.proveedores.Add((Proveedor)item);
+
+                    }
+                }
                 DialogResult = DialogResult.OK;
             }
         }
@@ -142,15 +181,18 @@ namespace ViveroEF2024.Windows
 
         private void cboTiposEnvases_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (cboTiposEnvases.SelectedIndex>0)
+            if (cboTiposEnvases.SelectedIndex > 0)
             {
-                tipoDeEnvase=(TipoDeEnvase?)cboTiposEnvases.SelectedItem;
-            }else { tipoDeEnvase = null; }
+                tipoDeEnvase = (TipoDeEnvase?)cboTiposEnvases.SelectedItem;
+            }
+            else { tipoDeEnvase = null; }
         }
 
-        internal void SetPlanta(Planta? planta)
+
+        public void SetPlantaProveedores(
+            (Planta? planta, List<Proveedor>? proveedores)p)
         {
-            this.planta = planta;
+            this.p= p;
         }
     }
 }

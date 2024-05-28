@@ -21,28 +21,27 @@ namespace ViveroEF2024.Servicios.Servicios
             _proveedorRepository = proveedorRepository;
         }
 
-        public void Borrar(Planta planta)
+        public void Borrar(int plantaId)
         {
             try
             {
                 _unitOfWork.BeginTransaction();
 
-                // Eliminar las relaciones de
-                // la planta con los proveedores
-                if (planta.ProveedoresPlantas != null)
+                var planta = _repository.GetPlantaPorId(plantaId);
+                if (planta == null)
                 {
-                    foreach (var proveedorPlanta in
-                        planta.ProveedoresPlantas.ToList())
-                    {
-                        planta.ProveedoresPlantas
-                            .Remove(proveedorPlanta);
-                    }
+                    throw new Exception("La planta especificada no existe.");
                 }
+
+                // Eliminar relaciones con proveedores
+                _repository.EliminarRelaciones(planta);
+                _unitOfWork.SaveChanges(); // Guardar cambios para confirmar eliminación de relaciones
 
                 // Eliminar la planta
                 _repository.Borrar(planta);
+                _unitOfWork.SaveChanges(); // Guardar cambios para confirmar eliminación de la planta
 
-                _unitOfWork.Commit();
+                _unitOfWork.Commit(); // Confirmar los cambios
             }
             catch (Exception)
             {
@@ -77,21 +76,41 @@ namespace ViveroEF2024.Servicios.Servicios
             return _repository.GetListaDto();
         }
 
-        public void Guardar(Planta planta)
+        public void Guardar(Planta planta, List<Proveedor>? proveedores = null)
         {
             try
             {
                 _unitOfWork.BeginTransaction();
+
                 if (planta.PlantaId == 0)
                 {
                     _repository.Agregar(planta);
+                    _unitOfWork.SaveChanges(); // Guardar cambios para obtener el id de la planta agregada
+
+                    if (proveedores != null && proveedores.Any())
+                    {
+                        _repository.AgregarProveedoresPlanta(planta, proveedores);
+                    }
                 }
                 else
                 {
                     _repository.Editar(planta);
-                }
-                _unitOfWork.Commit();
+                    _unitOfWork.SaveChanges(); // Guardar cambios de la planta antes de manejar relaciones
 
+                    if (proveedores != null)
+                    {
+                        _repository.EliminarRelaciones(planta);
+                        _unitOfWork.SaveChanges(); // Guardar cambios para confirmar eliminación
+
+                        if (proveedores.Any())
+                        {
+                            _repository.AgregarProveedoresPlanta(planta, proveedores);
+                        }
+                    }
+                }
+
+                _unitOfWork.SaveChanges(); // Guardar todos los cambios al final
+                _unitOfWork.Commit(); // Confirmar los cambios
             }
             catch (Exception)
             {
@@ -231,6 +250,11 @@ namespace ViveroEF2024.Servicios.Servicios
         public bool ExisteRelacion(Planta planta, Proveedor proveedor)
         {
             return _repository.ExisteRelacion(planta, proveedor);
+        }
+
+        public void Guardar(Planta planta)
+        {
+            throw new NotImplementedException();
         }
     }
 }

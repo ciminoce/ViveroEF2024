@@ -13,6 +13,33 @@ namespace ViveroEF2024.Datos.Repositories
         {
             _context = context;
         }
+        public void AgregarProveedoresPlanta(Planta planta, List<Proveedor> proveedores)
+        {
+            foreach (var proveedor in proveedores)
+            {
+                var proveedorExistente = _context.Proveedores
+                    .FirstOrDefault(p => p.ProveedorId == proveedor.ProveedorId);
+
+                if (proveedorExistente == null)
+                {
+                    _context.Proveedores.Add(proveedor); // Agregar nuevo proveedor
+                    proveedorExistente = proveedor; // Establecer proveedorExistente como el nuevo proveedor
+                }
+                else
+                {
+                    _context.Proveedores.Attach(proveedorExistente); // Attach si el proveedor ya existe y está detached
+                }
+
+                if (!ExisteRelacion(planta, proveedorExistente))
+                {
+                    _context.ProveedoresPlantas.Add(new ProveedorPlanta
+                    {
+                        PlantaId = planta.PlantaId,
+                        ProveedorId = proveedorExistente.ProveedorId
+                    });
+                }
+            }
+        }
 
         public void Agregar(Planta planta)
         {
@@ -253,12 +280,13 @@ namespace ViveroEF2024.Datos.Repositories
                 {
                     PlantaId = p.PlantaId,
                     Nombre = p.Descripcion,
-                    Envase = p.TipoDeEnvase.Descripcion,
-                    Tipo = p.TipoDePlanta.Descripcion,
+                    Envase = p.TipoDeEnvase==null?"N/A":p.TipoDeEnvase.Descripcion,
+                    Tipo = p.TipoDePlanta==null?"N/A":p.TipoDePlanta.Descripcion,
                     Precio = p.PrecioVenta
                 })
                 .ToList();
         }
+
 
         public void AgregarProveedorPlanta(ProveedorPlanta nuevaRelacion)
         {
@@ -286,15 +314,51 @@ namespace ViveroEF2024.Datos.Repositories
 
         }
 
-        public bool ExisteRelacion(Planta planta, Proveedor proveedor)
+        public bool ExisteRelacion(Planta planta, 
+            Proveedor proveedor)
         {
-            if(planta is null || proveedor is null) return false;
-            var existeRelacion=_context.Plantas
-                .Include(pp=>pp.ProveedoresPlantas)
-                .ThenInclude(pp=>pp.Proveedor)
-                .Any(p=>p.PlantaId==planta.PlantaId && 
-                    p.ProveedoresPlantas.Any(pp=>pp.ProveedorId==proveedor.ProveedorId));
-            return existeRelacion;
+            if (planta == null || proveedor == null) return false;
+
+            return _context.ProveedoresPlantas
+                .Any(pp => pp.PlantaId == planta.PlantaId 
+                && pp.ProveedorId == proveedor.ProveedorId);
         }
+
+        //public void EditarProveedoresPlanta(Planta planta, List<Proveedor> proveedores)
+        //{
+        //    // Si hay proveedores, agregar las relaciones
+        //    if (proveedores != null && proveedores.Any())
+        //    {
+
+        //        foreach (var proveedor in proveedores)
+        //        {
+        //            //TODO:considerar que el proveedor podría ser nuevo
+        //            // Attach si el proveedor ya existe
+        //            _context.Proveedores.Attach(proveedor); 
+
+        //            if (!ExisteRelacion(planta, proveedor))
+        //            {
+        //                _context.ProveedoresPlantas.Add(new ProveedorPlanta
+        //                {
+        //                    PlantaId = planta.PlantaId,
+        //                    ProveedorId = proveedor.ProveedorId
+        //                });
+
+        //            }
+        //        }
+                
+        //    }
+        //}
+
+        public void EliminarRelaciones(Planta planta)
+        {
+            var relacionesPasadas = _context.ProveedoresPlantas
+                .Where(pp => pp.PlantaId == planta.PlantaId)
+                .ToList();
+
+            _context.ProveedoresPlantas
+                .RemoveRange(relacionesPasadas);
+        }
+
     }
 }

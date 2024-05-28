@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
             panelGrilla = new Panel();
             dgvDatos = new DataGridView();
             colPlanta = new DataGridViewTextBoxColumn();
@@ -68,6 +68,7 @@
             btnSiguiente = new Button();
             btnAnterior = new Button();
             btnPrimero = new Button();
+            tsbQuitarProveedor = new ToolStripButton();
             panelGrilla.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvDatos).BeginInit();
             panelToolBar.SuspendLayout();
@@ -88,8 +89,8 @@
             // 
             dgvDatos.AllowUserToAddRows = false;
             dgvDatos.AllowUserToDeleteRows = false;
-            dataGridViewCellStyle2.BackColor = Color.FromArgb(224, 224, 224);
-            dgvDatos.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle1.BackColor = Color.FromArgb(224, 224, 224);
+            dgvDatos.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
             dgvDatos.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dgvDatos.Columns.AddRange(new DataGridViewColumn[] { colPlanta, colTipoPlanta, colTipoEnvase, colPrecio, colCantidad });
             dgvDatos.Dock = DockStyle.Fill;
@@ -150,7 +151,7 @@
             // 
             // toolStrip1
             // 
-            toolStrip1.Items.AddRange(new ToolStripItem[] { tsbNuevo, tsbBorrar, tsbEditar, toolStripSeparator1, tsbFiltrar, tsbActualizar, toolStripSeparator2, tsbProveedores, tsbAsignarProveedor, toolStripSeparator4, tsbOrden, toolStripSeparator3, tsbCerrar });
+            toolStrip1.Items.AddRange(new ToolStripItem[] { tsbNuevo, tsbBorrar, tsbEditar, toolStripSeparator1, tsbFiltrar, tsbActualizar, toolStripSeparator2, tsbProveedores, tsbAsignarProveedor, tsbQuitarProveedor, toolStripSeparator4, tsbOrden, toolStripSeparator3, tsbCerrar });
             toolStrip1.Location = new Point(0, 0);
             toolStrip1.Name = "toolStrip1";
             toolStrip1.Size = new Size(800, 62);
@@ -428,6 +429,16 @@
             btnPrimero.UseVisualStyleBackColor = true;
             btnPrimero.Click += btnPrimero_Click;
             // 
+            // tsbQuitarProveedor
+            // 
+            tsbQuitarProveedor.Image = Properties.Resources.remove_user_male_40px;
+            tsbQuitarProveedor.ImageScaling = ToolStripItemImageScaling.None;
+            tsbQuitarProveedor.ImageTransparentColor = Color.Magenta;
+            tsbQuitarProveedor.Name = "tsbQuitarProveedor";
+            tsbQuitarProveedor.Size = new Size(74, 59);
+            tsbQuitarProveedor.Text = "Quitar Prov.";
+            tsbQuitarProveedor.TextImageRelation = TextImageRelation.ImageAboveText;
+            // 
             // frmPlantas
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -491,5 +502,6 @@
         private DataGridViewTextBoxColumn colTipoEnvase;
         private DataGridViewTextBoxColumn colPrecio;
         private DataGridViewTextBoxColumn colCantidad;
+        private ToolStripButton tsbQuitarProveedor;
     }
 }
